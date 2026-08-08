@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- TECHNOMARKET WORK PLAN · BUILD 4.0 · 2026-08-08 -->
 <html lang="bg" data-theme="light">
 <head>
   <meta charset="utf-8">
@@ -263,6 +264,8 @@
       grid-template-columns: repeat(7, minmax(0, 1fr));
       gap: 6px;
       margin-bottom: 18px;
+      touch-action: pan-y;
+      user-select: none;
     }
     .date-btn {
       min-width: 0;
@@ -754,6 +757,16 @@
     .consultant-stat strong { display:block; font-size:11px; letter-spacing:-.02em; }
     .consultant-meter { height:5px; margin-top:11px; overflow:hidden; border-radius:99px; background:#f0e9eb; }
     .consultant-meter i { display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,var(--red-deep),var(--red-2)); }
+    .consultant-actions { display:flex; justify-content:flex-end; margin-top:10px; }
+    .consultant-edit { padding:7px 11px; color:var(--red); font-size:8px; font-weight:900; border:1px solid rgba(227,6,19,.18); border-radius:10px; background:#fff; cursor:pointer; }
+    .month-picker { width:132px; min-height:34px; padding:7px 9px; color:var(--ink); font:800 9px/1 inherit; border:1px solid #eadfe2; border-radius:11px; background:var(--card); }
+    .date-nav-hint { margin:-10px 2px 13px; color:var(--muted); font-size:8px; text-align:center; }
+    .schedule-focus { margin-bottom:14px; padding:17px; border:1px solid #eee3e6; border-radius:22px; background:var(--card); box-shadow:var(--shadow-soft); }
+    .schedule-focus .schedule-date { margin-bottom:10px; }
+    .calendar-date-input { width:100%; min-height:52px; padding:12px 14px; color:var(--ink); font:800 14px/1 inherit; border:1px solid #e8dfe1; border-radius:15px; background:var(--card); }
+    .build-version { margin:14px 0 0; color:var(--muted); font-size:8px; text-align:center; }
+    .month-day-btn { width:100%; min-width:26px; padding:6px 3px; color:inherit; font:800 9px/1 inherit; border:0; border-radius:8px; background:transparent; cursor:pointer; }
+    .month-day-btn.active { color:#fff; background:var(--red); }
     .theme-sun { display: none; }
     html[data-theme="dark"] .theme-moon { display: none; }
     html[data-theme="dark"] .theme-sun { display: block; }
@@ -857,7 +870,7 @@
 
     <main class="content">
       <section class="view active" data-view="home">
-        <p class="eyebrow">Събота · 8 август</p>
+        <p class="eyebrow" id="homeDateTitle">Събота · 8 август</p>
         <h1>Добър ден, екип.</h1>
         <p class="intro">Ето как изглежда денят в Парк Център.</p>
 
@@ -865,7 +878,7 @@
 
         <button class="hero goal-hero interactive-card" data-open-view="dashboard" aria-label="Отвори дашборда с месечните цели">
           <div class="hero-copy">
-            <div class="hero-label"><span class="live-dot"></span> Цели · август 2026</div>
+            <div class="hero-label"><span class="live-dot"></span> <span id="heroMonthLabel">Цели · август 2026</span></div>
             <div class="hero-goal-row"><div><span class="hero-goal-value" id="heroRevenue">60 199 €</span><span class="hero-goal-note" id="heroRevenueNote">24% от месечната цел</span></div><div class="hero-ratio"><small>Дял гаранции</small><strong id="heroWarrantyRatio">0.89%</strong></div></div>
             <div class="line-chart home-line-chart" aria-hidden="true"><svg viewBox="0 0 320 80" preserveAspectRatio="none"><defs><linearGradient id="homeSalesArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="white" stop-opacity=".3"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient></defs><path class="grid" d="M0 21H320M0 42H320M0 63H320"/><path fill="url(#homeSalesArea)" d="M0 66 C35 64 38 42 73 45 S111 65 145 35 S184 14 214 39 S256 52 320 17 L320 80H0Z"/><path class="line" d="M0 66 C35 64 38 42 73 45 S111 65 145 35 S184 14 214 39 S256 52 320 17"/><circle class="point" cx="178" cy="20" r="3.5"/></svg></div>
             <div class="hero-progress"><i id="heroRevenueProgress" style="width:24%"></i></div>
@@ -875,7 +888,7 @@
           <div class="hero-orbit" aria-hidden="true"></div>
         </button>
 
-        <div class="date-strip" aria-label="Избери ден">
+        <div class="date-strip" id="homeDateStrip" aria-label="Избери ден">
           <button class="date-btn" data-day="5"><span>ср</span><strong>5</strong></button>
           <button class="date-btn" data-day="6"><span>чт</span><strong>6</strong></button>
           <button class="date-btn" data-day="7"><span>пт</span><strong>7</strong></button>
@@ -884,6 +897,7 @@
           <button class="date-btn" data-day="10"><span>пн</span><strong>10</strong></button>
           <button class="date-btn" data-day="11"><span>вт</span><strong>11</strong></button>
         </div>
+        <p class="date-nav-hint">Плъзни наляво или надясно, за да смениш датата</p>
 
         <div class="section-head"><div><h2>Днес накратко</h2><p>Докосни карта за повече информация</p></div><button class="text-btn" data-open-view="dashboard">Дашборд</button></div>
         <div class="metric-grid">
@@ -917,32 +931,34 @@
       </section>
 
       <section class="view" data-view="tasks">
-        <div class="page-head"><div><p class="eyebrow">Работен фокус</p><h1>Задачи</h1><p>Събота, 8 август</p></div><div style="display:grid;gap:7px;justify-items:end"><span class="count-pill" id="taskPill">3 остават</span><button class="mini-btn manager-only" data-manager-action="task-add">+ Добави</button></div></div>
+        <div class="page-head"><div><p class="eyebrow">Работен фокус</p><h1>Задачи</h1><p id="tasksDateTitle">Събота, 8 август</p></div><div style="display:grid;gap:7px;justify-items:end"><span class="count-pill" id="taskPill">3 остават</span><button class="mini-btn manager-only" data-manager-action="task-add">+ Добави</button></div></div>
         <p class="intro">Всички задачи са към екипа. Управителят може да посочи конкретен отговорник.</p>
         <div class="filter-row"><button class="filter active" data-filter="all">Всички</button><button class="filter" data-filter="open">Активни</button><button class="filter" data-filter="done">Завършени</button><button class="filter" data-filter="high">Важни</button></div>
         <div class="task-list full-tasks"></div>
       </section>
 
       <section class="view" data-view="schedule">
-        <div class="page-head"><div><p class="eyebrow">Август 2026</p><h1>График</h1><p>Целият месец · Парк Център</p></div><div style="display:grid;gap:7px;justify-items:end"><button class="icon-btn" id="calendarBtn" aria-label="Календар"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></button><button class="mini-btn manager-only" data-manager-action="schedule">Редактирай</button></div></div>
+        <div class="page-head"><div><p class="eyebrow" id="scheduleMonthTitle">Август 2026</p><h1>График</h1><p>Избери ден и виж реалните смени</p></div><div style="display:grid;gap:7px;justify-items:end"><div style="display:flex;gap:7px;align-items:center"><input class="month-picker" id="scheduleMonthPicker" type="month" aria-label="Избери месец за графика"><button class="icon-btn" id="calendarBtn" type="button" aria-label="Отвори календар"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></button></div><button class="mini-btn manager-only" data-manager-action="schedule">Редактирай</button></div></div>
         <div class="segmented"><button class="active" data-schedule-mode="days">По дни</button><button data-schedule-mode="month">Таблица</button></div>
-        <div class="date-strip" aria-label="Дни от седмицата">
+        <div class="date-strip" id="scheduleDateStrip" aria-label="Избери дата от графика">
           <button class="date-btn"><span>ср</span><strong>5</strong></button><button class="date-btn"><span>чт</span><strong>6</strong></button><button class="date-btn"><span>пт</span><strong>7</strong></button><button class="date-btn active"><span>сб</span><strong>8</strong></button><button class="date-btn"><span>нд</span><strong>9</strong></button><button class="date-btn"><span>пн</span><strong>10</strong></button><button class="date-btn"><span>вт</span><strong>11</strong></button>
         </div>
-        <div id="scheduleList"></div>
+        <p class="date-nav-hint">Плъзни наляво или надясно, за да смениш датата</p>
+        <div class="schedule-focus" id="scheduleDayFocus"></div>
+        <div id="scheduleList" hidden></div>
         <div class="month-wrap" id="monthWrap"><table class="month-table" id="monthTable"></table></div>
       </section>
 
       <section class="view" data-view="dashboard">
-        <div class="page-head"><div><p class="eyebrow">Месечен преглед</p><h1>Дашборд</h1><p id="resultsUpdated">Последно обновяване 12:41</p></div><div style="display:grid;gap:7px;justify-items:end"><span class="count-pill" id="goalPill">24% цел</span><button class="mini-btn manager-only" data-manager-action="goals">Редактирай цели</button></div></div>
+        <div class="page-head"><div><p class="eyebrow">Месечен преглед</p><h1>Дашборд</h1><p id="resultsUpdated">Последно обновяване 12:41</p></div><div style="display:grid;gap:7px;justify-items:end"><input class="month-picker" id="resultMonthPicker" type="month" aria-label="Избери месец за резултатите"><span class="count-pill" id="goalPill">24% цел</span><button class="mini-btn manager-only" data-manager-action="consultant-edit">Редактирай служител</button><button class="mini-btn manager-only" data-manager-action="goals">Редактирай цели</button></div></div>
         <article class="dashboard-hero">
-          <p class="dashboard-kicker">Оборот на магазина · август</p><strong class="dashboard-total" id="dashboardRevenue">60 199 €</strong>
+          <p class="dashboard-kicker" id="dashboardMonthKicker">Оборот на магазина · август</p><strong class="dashboard-total" id="dashboardRevenue">60 199 €</strong>
           <div class="dashboard-sub"><span id="dashboardGoalText">24% от цел 250 000 €</span><span>Парк Център</span></div>
           <div class="line-chart" aria-label="Графика на оборота за последните седем дни"><svg viewBox="0 0 320 110" preserveAspectRatio="none"><defs><linearGradient id="salesArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="white" stop-opacity=".35"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient></defs><path class="grid" d="M0 25H320M0 57H320M0 89H320"/><path class="area" d="M0 93 C35 92 35 62 71 65 S108 89 144 49 S183 19 212 52 S251 75 320 26 L320 110H0Z"/><path class="line" d="M0 93 C35 92 35 62 71 65 S108 89 144 49 S183 19 212 52 S251 75 320 26"/><circle class="point" cx="174" cy="31" r="4"/></svg></div>
         </article>
         <div class="ratio-strip"><article class="ratio-card"><small>Гаранции</small><strong id="dashboardWarranty">533.79 €</strong><span id="dashboardWarrantyCount">4 броя</span></article><article class="ratio-card"><small>Дял гаранции / оборот</small><strong id="storeWarrantyRatio">0.89%</strong><span>на ниво магазин</span></article></div>
-        <article class="goal-card"><div class="goal-top"><div><h3>Оборот за август</h3><p>Цел на магазина</p><div class="goal-number"><span id="revenueValue">60 199</span> <small>€</small></div></div><div class="donut" id="revenueDonut" style="--p:24%" data-value="24%"></div></div><div class="progress-line"><i id="revenueProgress" style="width:24%"></i></div><button class="mini-btn manager-only" style="margin-top:14px" data-manager-action="turnover">+ Добави оборот</button></article>
-        <article class="goal-card"><div class="goal-top"><div><h3>Гаранции</h3><p>ЗК Алианц · август</p><div class="goal-number"><span id="warrantyValue">533.79</span> <small>€</small></div></div><div class="donut" id="warrantyDonut" style="--p:12%" data-value="12%"></div></div><div class="progress-line"><i id="warrantyProgress" style="width:12%"></i></div><button class="mini-btn manager-only" style="margin-top:14px" data-manager-action="warranty">+ Добави гаранция</button></article>
+        <article class="goal-card"><div class="goal-top"><div><h3 id="revenueMonthTitle">Оборот за август</h3><p>Цел на магазина</p><div class="goal-number"><span id="revenueValue">60 199</span> <small>€</small></div></div><div class="donut" id="revenueDonut" style="--p:24%" data-value="24%"></div></div><div class="progress-line"><i id="revenueProgress" style="width:24%"></i></div><button class="mini-btn manager-only" style="margin-top:14px" data-manager-action="turnover">+ Добави оборот</button></article>
+        <article class="goal-card"><div class="goal-top"><div><h3>Гаранции</h3><p id="warrantyMonthTitle">ЗК Алианц · август</p><div class="goal-number"><span id="warrantyValue">533.79</span> <small>€</small></div></div><div class="donut" id="warrantyDonut" style="--p:12%" data-value="12%"></div></div><div class="progress-line"><i id="warrantyProgress" style="width:12%"></i></div><button class="mini-btn manager-only" style="margin-top:14px" data-manager-action="warranty">+ Добави гаранция</button></article>
         <div class="section-head"><div><h2>Индивидуални резултати</h2><p>Гаранции спрямо оборот за месеца</p></div></div>
         <article class="goal-card consultant-shell"><div class="consultant-table" id="consultantTable"></div></article>
       </section>
@@ -992,11 +1008,21 @@
         <button class="manager-tile" data-manager-action="task-add"><i>✓</i><strong>Нова задача</strong><span>Добави задача за човек или екипа</span></button>
         <button class="manager-tile" data-manager-action="turnover"><i>↗</i><strong>Добави оборот</strong><span>Запиши продажба към консултант</span></button>
         <button class="manager-tile" data-manager-action="warranty"><i>◇</i><strong>Добави гаранция</strong><span>Обнови Алианц резултата</span></button>
+        <button class="manager-tile" data-manager-action="consultant-edit"><i>✎</i><strong>Резултати по служител</strong><span>Коригирай оборот и гаранции по дата</span></button>
         <button class="manager-tile" data-manager-action="goals"><i>◎</i><strong>Цели</strong><span>Промени месечните цели</span></button>
         <button class="manager-tile" data-manager-action="schedule"><i>▦</i><strong>График</strong><span>Промени смяна или отсъствие</span></button>
         <button class="manager-tile" data-manager-action="notice"><i>⌁</i><strong>Съобщение</strong><span>Обнови известието за екипа</span></button>
       </div>
+      <p class="build-version">WORK PLAN · версия 4.0</p>
     </div>
+  </div>
+  <div class="form-backdrop" id="calendarBackdrop" aria-hidden="true">
+    <form class="form-panel" id="calendarForm">
+      <div class="grabber"></div>
+      <div class="form-head"><div><h3>Избери дата</h3><p>Графикът и началният екран ще се синхронизират с нея.</p></div><button class="close-btn" type="button" data-close="calendar">×</button></div>
+      <div class="field"><label for="calendarDate">Дата</label><input class="calendar-date-input" id="calendarDate" name="calendarDate" type="date" required></div>
+      <button class="form-submit" type="submit">Покажи датата</button>
+    </form>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -1036,17 +1062,17 @@
       text: 'Следим месечната цел и актуалния прогрес на екипа.'
     },
     consultants: [
-      { name: 'Васил', turnover: 17458, warranty: 165.60 },
-      { name: 'Деси', turnover: 14564, warranty: 151.20 },
-      { name: 'Боби-Зиад', turnover: 9935, warranty: 122.50 },
-      { name: 'Стани', turnover: 8290, warranty: 71.99 },
-      { name: 'Радо', turnover: 5952.01, warranty: 22.50 },
-      { name: 'Георги', turnover: 4000, warranty: 0 },
-      { name: 'Ася', turnover: 0, warranty: 0 },
-      { name: 'Стефка', turnover: 0, warranty: 0 },
-      { name: 'Теодора', turnover: 0, warranty: 0 },
-      { name: 'Стоянка', turnover: 0, warranty: 0 },
-      { name: 'Стефани', turnover: 0, warranty: 0 }
+      { name: 'Васил', turnover: 17458, warranty: 165.60, warrantyCount: 1 },
+      { name: 'Деси', turnover: 14564, warranty: 151.20, warrantyCount: 1 },
+      { name: 'Боби-Зиад', turnover: 9935, warranty: 122.50, warrantyCount: 1 },
+      { name: 'Стани', turnover: 8290, warranty: 71.99, warrantyCount: 1 },
+      { name: 'Радо', turnover: 5952.01, warranty: 22.50, warrantyCount: 0 },
+      { name: 'Георги', turnover: 4000, warranty: 0, warrantyCount: 0 },
+      { name: 'Ася', turnover: 0, warranty: 0, warrantyCount: 0 },
+      { name: 'Стефка', turnover: 0, warranty: 0, warrantyCount: 0 },
+      { name: 'Теодора', turnover: 0, warranty: 0, warrantyCount: 0 },
+      { name: 'Стоянка', turnover: 0, warranty: 0, warrantyCount: 0 },
+      { name: 'Стефани', turnover: 0, warranty: 0, warrantyCount: 0 }
     ],
     schedule: {
       'Боби-Зиад': '1 ✕ ✕ 1 3 3 1 1 ✕ ✕ 1 1 3 ✕ ✕ ✕ 3 1 1 3 3 1 ✕ ✕ 1 1 1 1 1 ✕ ✕'.split(' '),
@@ -1078,19 +1104,60 @@
     }
   } catch (_) {}
 
-  EMPLOYEES.forEach(name => {
-    if (!Array.isArray(state.schedule[name])) state.schedule[name] = Array(31).fill('✕');
-    state.schedule[name] = state.schedule[name].slice(0, 31);
-    while (state.schedule[name].length < 31) state.schedule[name].push('✕');
-  });
+  if (Array.isArray(state.employees) && state.employees.length) EMPLOYEES.splice(0, EMPLOYEES.length, ...state.employees);
+  else state.employees = [...EMPLOYEES];
+
+  const DEFAULT_MONTH = '2026-08';
+  const MIGRATION_DATE = '2026-08-08';
+  const now = new Date();
+  let activeMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  const daysInMonth = month => {
+    const [year, monthNumber] = month.split('-').map(Number);
+    return new Date(year, monthNumber, 0).getDate();
+  };
+  state.schedules = state.schedules && typeof state.schedules === 'object' ? state.schedules : { [DEFAULT_MONTH]: clone(state.schedule) };
+  state.monthGoals = state.monthGoals && typeof state.monthGoals === 'object' ? state.monthGoals : {
+    [DEFAULT_MONTH]: { revenueTarget: Number(state.metrics.revenueTarget) || 250000, warrantyTarget: Number(state.metrics.warrantyTarget) || 4500 }
+  };
+  function ensureMonthState(month) {
+    const dayCount = daysInMonth(month);
+    if (!state.monthGoals[month]) {
+      const previous = Object.keys(state.monthGoals).sort().reverse().find(key => key < month);
+      const fallback = state.monthGoals[previous] || state.monthGoals[DEFAULT_MONTH] || { revenueTarget: 250000, warrantyTarget: 4500 };
+      state.monthGoals[month] = { revenueTarget: Number(fallback.revenueTarget) || 250000, warrantyTarget: Number(fallback.warrantyTarget) || 4500 };
+    }
+    if (!state.schedules[month]) state.schedules[month] = {};
+    EMPLOYEES.forEach(name => {
+      if (!Array.isArray(state.schedules[month][name])) state.schedules[month][name] = Array(dayCount).fill('✕');
+      state.schedules[month][name] = state.schedules[month][name].slice(0, dayCount);
+      while (state.schedules[month][name].length < dayCount) state.schedules[month][name].push('✕');
+    });
+    state.schedule = state.schedules[month];
+    state.metrics.revenueTarget = state.monthGoals[month].revenueTarget;
+    state.metrics.warrantyTarget = state.monthGoals[month].warrantyTarget;
+  }
+  ensureMonthState(activeMonth);
   if (!Array.isArray(state.consultants)) state.consultants = clone(DEFAULT_STATE.consultants);
   EMPLOYEES.forEach(name => {
-    if (!state.consultants.some(item => item.name === name)) state.consultants.push({ name, turnover: 0, warranty: 0 });
+    if (!state.consultants.some(item => item.name === name)) state.consultants.push({ name, turnover: 0, warranty: 0, warrantyCount: 0 });
   });
+  state.consultants.forEach(item => {
+    const fallback = DEFAULT_STATE.consultants.find(defaultItem => defaultItem.name === item.name);
+    if (!item.daily || typeof item.daily !== 'object' || Array.isArray(item.daily)) {
+      item.daily = { [MIGRATION_DATE]: { turnover: Number(item.turnover) || 0, warranty: Number(item.warranty) || 0, warrantyCount: Number.isFinite(Number(item.warrantyCount)) ? Number(item.warrantyCount) : Number(fallback?.warrantyCount || 0) } };
+    }
+    const monthRecords = Object.entries(item.daily).filter(([date]) => date.startsWith(`${activeMonth}-`));
+    item.turnover = monthRecords.reduce((sum, [, record]) => sum + (Number(record.turnover) || 0), 0);
+    item.warranty = monthRecords.reduce((sum, [, record]) => sum + (Number(record.warranty) || 0), 0);
+    item.warrantyCount = monthRecords.reduce((sum, [, record]) => sum + (Number(record.warrantyCount) || 0), 0);
+  });
+  state.metrics.revenueCurrent = state.consultants.reduce((sum, item) => sum + Number(item.turnover || 0), 0);
+  state.metrics.warrantyCurrent = state.consultants.reduce((sum, item) => sum + Number(item.warranty || 0), 0);
+  state.metrics.warrantyCount = state.consultants.reduce((sum, item) => sum + Number(item.warrantyCount || 0), 0);
   state.tasks = (state.tasks || []).map(task => ({ ...task, owner: task.owner === 'Екипна' ? 'Целия екип' : task.owner }));
 
   let currentFilter = 'all';
-  let selectedDay = 8;
+  let selectedDay = activeMonth === `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}` ? now.getDate() : 1;
   let currentEditor = null;
   let pendingAction = null;
   let toastTimer;
@@ -1104,6 +1171,38 @@
   const ratioPercent = (warranty, turnover) => Number(turnover) > 0 ? (Number(warranty) / Number(turnover)) * 100 : 0;
   const formatPercent = value => `${new Intl.NumberFormat('bg-BG', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Number(value) || 0)}%`;
   const initials = name => name.split(/[ -]/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();
+  const monthDate = month => { const [year, monthNumber] = month.split('-').map(Number); return new Date(year, monthNumber - 1, 1); };
+  const monthName = month => new Intl.DateTimeFormat('bg-BG', { month: 'long' }).format(monthDate(month));
+  const monthTitle = month => {
+    const value = new Intl.DateTimeFormat('bg-BG', { month: 'long', year: 'numeric' }).format(monthDate(month));
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  };
+  const defaultResultDate = () => activeMonth === `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}` ? `${activeMonth}-${String(Math.min(now.getDate(), daysInMonth(activeMonth))).padStart(2, '0')}` : `${activeMonth}-01`;
+
+  function setSelectedDate(month, day, notify = false) {
+    if (!/^\d{4}-\d{2}$/.test(month)) return;
+    activeMonth = month;
+    ensureMonthState(activeMonth);
+    selectedDay = Math.max(1, Math.min(daysInMonth(activeMonth), Number(day) || 1));
+    syncStoreTotalsFromConsultants();
+    saveState();
+    renderAll();
+    if (notify) showToast(`Показва се ${selectedDay} ${monthName(activeMonth)}`);
+  }
+
+  function moveSelectedDay(direction) {
+    const [year, monthNumber] = activeMonth.split('-').map(Number);
+    const next = new Date(year, monthNumber - 1, selectedDay + direction);
+    const nextMonth = `${next.getFullYear()}-${String(next.getMonth() + 1).padStart(2, '0')}`;
+    setSelectedDate(nextMonth, next.getDate());
+  }
+
+  function switchMonth(month) {
+    if (!/^\d{4}-\d{2}$/.test(month)) return;
+    const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    setSelectedDate(month, month === currentMonth ? Math.min(now.getDate(), daysInMonth(month)) : 1);
+    showToast(`Показва се ${monthTitle(activeMonth)}`);
+  }
 
   function saveState() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) {}
@@ -1168,20 +1267,41 @@
     if (note) note.textContent = `${remaining} остават за днес`;
   }
 
+  function totalsThroughDay(day) {
+    const cutoff = `${activeMonth}-${String(day).padStart(2, '0')}`;
+    return state.consultants.reduce((totals, consultant) => {
+      Object.entries(consultant.daily || {}).forEach(([date, record]) => {
+        if (date.startsWith(`${activeMonth}-`) && date <= cutoff) {
+          totals.revenue += Number(record.turnover) || 0;
+          totals.warranty += Number(record.warranty) || 0;
+          totals.warrantyCount += Number(record.warrantyCount) || 0;
+        }
+      });
+      return totals;
+    }, { revenue: 0, warranty: 0, warrantyCount: 0 });
+  }
+
   function renderMetrics() {
     const metrics = state.metrics;
+    const goals = state.monthGoals[activeMonth];
+    metrics.revenueTarget = goals.revenueTarget;
+    metrics.warrantyTarget = goals.warrantyTarget;
     const revenuePercent = percent(metrics.revenueCurrent, metrics.revenueTarget);
     const warrantyPercent = percent(metrics.warrantyCurrent, metrics.warrantyTarget);
     const storeRatio = ratioPercent(metrics.warrantyCurrent, metrics.revenueCurrent);
-    $('#metricRevenueHome').textContent = `${formatMoney(metrics.revenueCurrent)} €`;
-    $('#metricRevenueNote').textContent = `${revenuePercent}% от целта`;
-    $('#metricWarrantyHome').textContent = `${formatMoney(metrics.warrantyCurrent)} €`;
-    $('#metricWarrantyGoal').textContent = `${formatPercent(storeRatio)} от оборота`;
-    $('#metricWarrantyProgress').style.width = `${warrantyPercent}%`;
-    $('#heroRevenue').textContent = `${formatMoney(metrics.revenueCurrent)} €`;
-    $('#heroRevenueNote').textContent = `${revenuePercent}% от цел ${formatMoney(metrics.revenueTarget)} €`;
-    $('#heroRevenueProgress').style.width = `${revenuePercent}%`;
-    $('#heroWarrantyRatio').textContent = formatPercent(storeRatio);
+    const toDate = totalsThroughDay(selectedDay);
+    const toDateRevenuePercent = percent(toDate.revenue, metrics.revenueTarget);
+    const toDateWarrantyPercent = percent(toDate.warranty, metrics.warrantyTarget);
+    const toDateRatio = ratioPercent(toDate.warranty, toDate.revenue);
+    $('#metricRevenueHome').textContent = `${formatMoney(toDate.revenue)} €`;
+    $('#metricRevenueNote').textContent = `${toDateRevenuePercent}% от целта · до ${selectedDay} ${monthName(activeMonth)}`;
+    $('#metricWarrantyHome').textContent = `${formatMoney(toDate.warranty)} €`;
+    $('#metricWarrantyGoal').textContent = `${formatPercent(toDateRatio)} от оборота · ${toDate.warrantyCount} бр.`;
+    $('#metricWarrantyProgress').style.width = `${toDateWarrantyPercent}%`;
+    $('#heroRevenue').textContent = `${formatMoney(toDate.revenue)} €`;
+    $('#heroRevenueNote').textContent = `${toDateRevenuePercent}% от целта · натрупано до датата`;
+    $('#heroRevenueProgress').style.width = `${toDateRevenuePercent}%`;
+    $('#heroWarrantyRatio').textContent = formatPercent(toDateRatio);
     $('#dashboardRevenue').textContent = `${formatMoney(metrics.revenueCurrent)} €`;
     $('#dashboardGoalText').textContent = `${revenuePercent}% от цел ${formatMoney(metrics.revenueTarget)} €`;
     $('#dashboardWarranty').textContent = `${formatMoney(metrics.warrantyCurrent)} €`;
@@ -1197,13 +1317,21 @@
     $('#warrantyProgress').style.width = `${warrantyPercent}%`;
     $('#goalPill').textContent = `${revenuePercent}% цел`;
     $('#resultsUpdated').textContent = `Последно обновяване ${escapeHtml(metrics.updatedAt)}`;
-    $('#noticeTitle').textContent = state.notice.title;
+    $('#noticeTitle').textContent = state.notice.title === DEFAULT_STATE.notice.title ? `Гаранции ЗК Алианц · ${monthName(activeMonth)}` : state.notice.title;
     $('#noticeText').textContent = state.notice.text;
+    $('#resultMonthPicker').value = activeMonth;
+    $('#scheduleMonthPicker').value = activeMonth;
+    $('#scheduleMonthTitle').textContent = monthTitle(activeMonth);
+    $('#heroMonthLabel').textContent = `Към ${selectedDay} ${monthName(activeMonth)} · ${monthTitle(activeMonth).toLocaleLowerCase('bg-BG')}`;
+    $('#dashboardMonthKicker').textContent = `Оборот на магазина · ${monthName(activeMonth)}`;
+    $('#revenueMonthTitle').textContent = `Оборот за ${monthName(activeMonth)}`;
+    $('#warrantyMonthTitle').textContent = `ЗК Алианц · ${monthName(activeMonth)}`;
+    $('#tasksDateTitle').textContent = new Intl.DateTimeFormat('bg-BG', { weekday: 'long', day: 'numeric', month: 'long' }).format(now).replace(/^./, char => char.toUpperCase());
     const rows = [...state.consultants].sort((a, b) => Number(b.turnover) - Number(a.turnover));
     $('#consultantTable').innerHTML = rows.map((item, index) => {
       const itemRatio = ratioPercent(item.warranty, item.turnover);
       const meter = Math.min(100, Math.max(2, itemRatio * 25));
-      return `<div class="consultant-row"><div class="consultant-head"><span class="consultant-avatar">${escapeHtml(initials(item.name))}</span><div class="consultant-identity"><strong>${escapeHtml(item.name)}</strong><small>№${index + 1} по оборот за месеца</small></div><span class="ratio-value">${formatPercent(itemRatio)}</span></div><div class="consultant-stats"><div class="consultant-stat"><small>Оборот</small><strong>${formatMoney(item.turnover)} €</strong></div><div class="consultant-stat"><small>Гаранции</small><strong>${formatMoney(item.warranty)} €</strong></div></div><div class="consultant-meter"><i style="width:${meter}%"></i></div></div>`;
+      return `<div class="consultant-row"><div class="consultant-head"><span class="consultant-avatar">${escapeHtml(initials(item.name))}</span><div class="consultant-identity"><strong>${escapeHtml(item.name)}</strong><small>№${index + 1} по оборот за месеца</small></div><span class="ratio-value">${formatPercent(itemRatio)}</span></div><div class="consultant-stats"><div class="consultant-stat"><small>Оборот</small><strong>${formatMoney(item.turnover)} €</strong></div><div class="consultant-stat"><small>Гаранции · ${Number(item.warrantyCount || 0)} бр.</small><strong>${formatMoney(item.warranty)} €</strong></div></div><div class="consultant-meter"><i style="width:${meter}%"></i></div><div class="consultant-actions manager-only"><button class="consultant-edit" type="button" data-consultant-edit="${escapeHtml(item.name)}">Редактирай по дата</button></div></div>`;
     }).join('');
   }
 
@@ -1217,8 +1345,10 @@
   }
 
   function dayTitle(day) {
-    if (day === 8) return 'Днес, 8 август';
-    const value = new Intl.DateTimeFormat('bg-BG', { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date(2026, 7, day));
+    const [year, monthNumber] = activeMonth.split('-').map(Number);
+    const isToday = year === now.getFullYear() && monthNumber === now.getMonth() + 1 && day === now.getDate();
+    if (isToday) return `Днес, ${day} ${monthName(activeMonth)}`;
+    const value = new Intl.DateTimeFormat('bg-BG', { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date(year, monthNumber - 1, day));
     return value.charAt(0).toUpperCase() + value.slice(1);
   }
 
@@ -1231,19 +1361,16 @@
   }
 
   function renderSchedule() {
-    $('#scheduleList').innerHTML = Array.from({ length: 31 }, (_, index) => index + 1).map(day => {
-      const groups = scheduleGroups(day);
-      const workCount = groups['1'].length + groups['3'].length;
-      const away = groups['О'].length + groups['Б'].length;
-      const summary = workCount ? `${workCount} на работа${away ? ` · ${away} отсъства` : ''}` : 'няма планирана смяна';
-      return `<article class="schedule-card ${day === 8 ? 'today' : ''}" data-schedule-day="${day}">
-        <div class="schedule-date"><strong>${dayTitle(day)}</strong><div style="display:flex;align-items:center;gap:7px"><span>${summary}</span><button class="mini-btn manager-only" data-edit-day="${day}">Промени</button></div></div>
-        ${scheduleRow('1', groups['1'])}${scheduleRow('3', groups['3'])}${scheduleRow('О', groups['О'])}${scheduleRow('Б', groups['Б'])}
-      </article>`;
-    }).join('');
+    const dayCount = daysInMonth(activeMonth);
+    const todayDay = activeMonth === `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}` ? now.getDate() : -1;
+    const groups = scheduleGroups(selectedDay);
+    const workCount = groups['1'].length + groups['3'].length;
+    const away = groups['О'].length + groups['Б'].length;
+    const summary = workCount ? `${workCount} на работа${away ? ` · ${away} отсъства` : ''}` : 'няма планирана смяна';
+    $('#scheduleDayFocus').innerHTML = `<div class="schedule-date"><strong>${dayTitle(selectedDay)}</strong><div style="display:flex;align-items:center;gap:7px"><span>${summary}</span><button class="mini-btn manager-only" data-edit-day="${selectedDay}">Промени</button></div></div>${scheduleRow('1', groups['1'])}${scheduleRow('3', groups['3'])}${scheduleRow('О', groups['О'])}${scheduleRow('Б', groups['Б'])}`;
 
-    const header = `<thead><tr><th>Служител</th>${Array.from({ length: 31 }, (_, index) => `<th>${index + 1}</th>`).join('')}</tr></thead>`;
-    const body = `<tbody>${EMPLOYEES.map(name => `<tr><td>${escapeHtml(name)}</td>${state.schedule[name].map((code, index) => `<td data-cell-employee="${escapeHtml(name)}" data-cell-day="${index + 1}" title="${escapeHtml(name)} · ${index + 1} август · ${SCHEDULE_CODES[code].label}"><span class="shift-code ${SCHEDULE_CODES[code].className}">${escapeHtml(code)}</span></td>`).join('')}</tr>`).join('')}</tbody>`;
+    const header = `<thead><tr><th>Служител</th>${Array.from({ length: dayCount }, (_, index) => `<th><button class="month-day-btn ${index + 1 === selectedDay ? 'active' : ''}" type="button" data-select-day="${index + 1}" aria-label="Покажи ${index + 1} ${monthName(activeMonth)}">${index + 1}</button></th>`).join('')}</tr></thead>`;
+    const body = `<tbody>${EMPLOYEES.map(name => `<tr><td>${escapeHtml(name)}</td>${state.schedule[name].map((code, index) => `<td data-cell-employee="${escapeHtml(name)}" data-cell-day="${index + 1}" title="${escapeHtml(name)} · ${index + 1} ${monthName(activeMonth)} · ${SCHEDULE_CODES[code].label}"><span class="shift-code ${SCHEDULE_CODES[code].className}">${escapeHtml(code)}</span></td>`).join('')}</tr>`).join('')}</tbody>`;
     $('#monthTable').innerHTML = header + body;
     renderTeamDay(selectedDay);
   }
@@ -1251,15 +1378,32 @@
   function renderTeamDay(day) {
     const groups = scheduleGroups(day);
     const working = [...groups['1'].map(name => ({ name, shift: 'Смяна I' })), ...groups['3'].map(name => ({ name, shift: 'Смяна III' }))];
-    $('#teamTitle').textContent = day === 8 ? 'Екипът днес' : `Екипът на ${day} август`;
+    const isToday = activeMonth === `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}` && day === now.getDate();
+    $('#teamTitle').textContent = isToday ? 'Екипът днес' : `Екипът на ${day} ${monthName(activeMonth)}`;
     $('#teamCount').textContent = `${working.length} души са на работа`;
     $('#teamRow').innerHTML = working.map(person => `<div class="person"><div class="person-face">${escapeHtml(initials(person.name))}</div><b>${escapeHtml(person.name.split('-')[0])}</b><small>${person.shift}</small></div>`).join('') || '<p class="intro">Няма планирана смяна.</p>';
+  }
+
+  function renderDateStrip() {
+    const [year, monthNumber] = activeMonth.split('-').map(Number);
+    const dayCount = daysInMonth(activeMonth);
+    const start = Math.max(1, Math.min(dayCount - 6, selectedDay - 3));
+    const todayDay = year === now.getFullYear() && monthNumber === now.getMonth() + 1 ? now.getDate() : -1;
+    const markup = Array.from({ length: Math.min(7, dayCount) }, (_, index) => start + index).map(day => {
+      const weekday = new Intl.DateTimeFormat('bg-BG', { weekday: 'short' }).format(new Date(year, monthNumber - 1, day)).replace('.', '');
+      return `<button class="date-btn ${day === selectedDay ? 'active' : ''} ${day === todayDay ? 'today' : ''}" data-day="${day}"><span>${escapeHtml(weekday)}</span><strong>${day}</strong></button>`;
+    }).join('');
+    $('#homeDateStrip').innerHTML = markup;
+    $('#scheduleDateStrip').innerHTML = markup;
+    const title = new Intl.DateTimeFormat('bg-BG', { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date(year, monthNumber - 1, selectedDay));
+    $('#homeDateTitle').textContent = title.charAt(0).toUpperCase() + title.slice(1);
   }
 
   function renderAll() {
     renderTasks();
     renderMetrics();
     renderSchedule();
+    renderDateStrip();
   }
 
   function openView(name) {
@@ -1276,6 +1420,40 @@
     return `<div class="field"><label for="field-${name}">${label}</label>${control}</div>`;
   }
 
+  function dateField(selected = defaultResultDate()) {
+    return field('Дата', 'date', `<input id="field-date" name="date" type="date" min="${activeMonth}-01" max="${activeMonth}-${String(daysInMonth(activeMonth)).padStart(2, '0')}" required value="${escapeHtml(selected)}">`);
+  }
+
+  function dailyRecord(consultant, date, create = false) {
+    if (!consultant || !date) return null;
+    if (!consultant.daily) consultant.daily = {};
+    if (!consultant.daily[date] && create) consultant.daily[date] = { turnover: 0, warranty: 0, warrantyCount: 0 };
+    return consultant.daily[date] || { turnover: 0, warranty: 0, warrantyCount: 0 };
+  }
+
+  function syncStoreTotalsFromConsultants() {
+    state.consultants.forEach(item => {
+      const records = Object.entries(item.daily || {}).filter(([date]) => date.startsWith(`${activeMonth}-`));
+      item.turnover = records.reduce((sum, [, record]) => sum + (Number(record.turnover) || 0), 0);
+      item.warranty = records.reduce((sum, [, record]) => sum + (Number(record.warranty) || 0), 0);
+      item.warrantyCount = records.reduce((sum, [, record]) => sum + (Number(record.warrantyCount) || 0), 0);
+    });
+    state.metrics.revenueCurrent = state.consultants.reduce((sum, item) => sum + Number(item.turnover || 0), 0);
+    state.metrics.warrantyCurrent = state.consultants.reduce((sum, item) => sum + Number(item.warranty || 0), 0);
+    state.metrics.warrantyCount = state.consultants.reduce((sum, item) => sum + Number(item.warrantyCount || 0), 0);
+  }
+
+  function refreshConsultantEditor() {
+    const employee = $('#field-consultant')?.value;
+    const date = $('#field-date')?.value;
+    const consultant = state.consultants.find(item => item.name === employee);
+    const record = dailyRecord(consultant, date);
+    if ($('#field-name')) $('#field-name').value = employee || '';
+    if ($('#field-turnover')) $('#field-turnover').value = Number(record?.turnover || 0);
+    if ($('#field-warranty')) $('#field-warranty').value = Number(record?.warranty || 0);
+    if ($('#field-warrantyCount')) $('#field-warrantyCount').value = Number(record?.warrantyCount || 0);
+  }
+
   function openEditor(action, payload = {}) {
     if (!managerMode) {
       pendingAction = { action, payload };
@@ -1288,6 +1466,7 @@
     const title = $('#editorTitle');
     const subtitle = $('#editorSubtitle');
     const fields = $('#editorFields');
+    fields.onchange = null;
     $('#editorError').textContent = '';
 
     if (action === 'task-add' || action === 'task-edit') {
@@ -1300,23 +1479,35 @@
     } else if (action === 'turnover') {
       title.textContent = 'Добави оборот';
       subtitle.textContent = 'Сумата се прибавя към месечния резултат и консултанта.';
-      fields.innerHTML = `<div class="field-row">${field('Сума в €', 'amount', '<input id="field-amount" name="amount" type="number" min="0.01" step="0.01" required placeholder="0.00">')}${field('Консултант', 'consultant', `<select id="field-consultant" name="consultant">${employeeOptions('Боби-Зиад')}</select>`)}</div>`;
+      fields.innerHTML = dateField(payload.date || defaultResultDate()) + `<div class="field-row">${field('Сума в €', 'amount', '<input id="field-amount" name="amount" type="number" min="0.01" step="0.01" required placeholder="0.00">')}${field('Консултант', 'consultant', `<select id="field-consultant" name="consultant">${employeeOptions(payload.employee || 'Боби-Зиад')}</select>`)}</div>`;
     } else if (action === 'warranty') {
       title.textContent = 'Добави гаранция';
       subtitle.textContent = 'Обновява резултата за ЗК Алианц и броя гаранции.';
-      fields.innerHTML = `<div class="field-row">${field('Сума в €', 'amount', '<input id="field-amount" name="amount" type="number" min="0.01" step="0.01" required placeholder="0.00">')}${field('Консултант', 'consultant', `<select id="field-consultant" name="consultant">${employeeOptions('Боби-Зиад')}</select>`)}</div>`;
+      fields.innerHTML = dateField(payload.date || defaultResultDate()) + `<div class="field-row">${field('Сума в €', 'amount', '<input id="field-amount" name="amount" type="number" min="0.01" step="0.01" required placeholder="0.00">')}${field('Консултант', 'consultant', `<select id="field-consultant" name="consultant">${employeeOptions(payload.employee || 'Боби-Зиад')}</select>`)}</div>`;
+    } else if (action === 'consultant-edit') {
+      const employee = payload.employee || 'Боби-Зиад';
+      const date = payload.date || defaultResultDate();
+      title.textContent = 'Коригирай резултат';
+      subtitle.textContent = 'Избери служител и дата. Стойностите заменят записаното за този ден.';
+      fields.innerHTML = `<div class="field-row">${field('Служител', 'consultant', `<select id="field-consultant" name="consultant">${employeeOptions(employee)}</select>`)}${dateField(date)}</div>` +
+        field('Име на служителя', 'name', `<input id="field-name" name="name" required maxlength="40" value="${escapeHtml(employee)}">`) +
+        `<div class="field-row">${field('Оборот за деня', 'turnover', '<input id="field-turnover" name="turnover" type="number" min="0" step="0.01" required>')}${field('Гаранции за деня', 'warranty', '<input id="field-warranty" name="warranty" type="number" min="0" step="0.01" required>')}</div>` +
+        field('Брой гаранции за деня', 'warrantyCount', '<input id="field-warrantyCount" name="warrantyCount" type="number" min="0" step="1" required>');
+      refreshConsultantEditor();
+      fields.onchange = event => {
+        if (event.target.matches('#field-consultant, #field-date')) refreshConsultantEditor();
+      };
     } else if (action === 'goals') {
-      title.textContent = 'Оборот и цели';
-      subtitle.textContent = 'Можеш да коригираш текущите стойности и месечните цели.';
-      fields.innerHTML = `<div class="field-row">${field('Текущ оборот', 'revenueCurrent', `<input id="field-revenueCurrent" name="revenueCurrent" type="number" min="0" step="0.01" required value="${state.metrics.revenueCurrent}">`)}${field('Цел оборот', 'revenueTarget', `<input id="field-revenueTarget" name="revenueTarget" type="number" min="1" step="0.01" required value="${state.metrics.revenueTarget}">`)}</div>` +
-        `<div class="field-row">${field('Текущи гаранции', 'warrantyCurrent', `<input id="field-warrantyCurrent" name="warrantyCurrent" type="number" min="0" step="0.01" required value="${state.metrics.warrantyCurrent}">`)}${field('Цел гаранции', 'warrantyTarget', `<input id="field-warrantyTarget" name="warrantyTarget" type="number" min="1" step="0.01" required value="${state.metrics.warrantyTarget}">`)}</div>`;
+      title.textContent = `Цели за ${monthName(activeMonth)}`;
+      subtitle.textContent = 'Текущите резултати се събират автоматично от служителите за избрания месец.';
+      fields.innerHTML = `<div class="field-row">${field('Цел оборот', 'revenueTarget', `<input id="field-revenueTarget" name="revenueTarget" type="number" min="1" step="0.01" required value="${state.monthGoals[activeMonth].revenueTarget}">`)}${field('Цел гаранции', 'warrantyTarget', `<input id="field-warrantyTarget" name="warrantyTarget" type="number" min="1" step="0.01" required value="${state.monthGoals[activeMonth].warrantyTarget}">`)}</div>`;
     } else if (action === 'schedule') {
-      const day = Number(payload.day || selectedDay || 8);
+      const day = Number(payload.day || selectedDay || 1);
       const employee = payload.employee || 'Боби-Зиад';
       const code = state.schedule[employee][day - 1] || '✕';
       title.textContent = 'Редактирай графика';
       subtitle.textContent = 'Избери ден, служител и нов статус.';
-      fields.innerHTML = field('Ден от август', 'day', `<select id="field-day" name="day">${Array.from({ length: 31 }, (_, index) => `<option value="${index + 1}" ${index + 1 === day ? 'selected' : ''}>${index + 1} август</option>`).join('')}</select>`) +
+      fields.innerHTML = field(`Ден от ${monthName(activeMonth)}`, 'day', `<select id="field-day" name="day">${Array.from({ length: daysInMonth(activeMonth) }, (_, index) => `<option value="${index + 1}" ${index + 1 === day ? 'selected' : ''}>${index + 1} ${monthName(activeMonth)}</option>`).join('')}</select>`) +
         field('Служител', 'employee', `<select id="field-employee" name="employee">${employeeOptions(employee)}</select>`) +
         field('Смяна / статус', 'code', `<select id="field-code" name="code">${Object.entries(SCHEDULE_CODES).map(([value, meta]) => `<option value="${value}" ${value === code ? 'selected' : ''}>${meta.label}</option>`).join('')}</select>`);
     } else if (action === 'notice') {
@@ -1350,30 +1541,62 @@
     } else if (action === 'turnover') {
       const amount = Number(formData.get('amount'));
       const consultant = String(formData.get('consultant'));
+      const date = String(formData.get('date'));
       if (!(amount > 0)) { error.textContent = 'Въведи валидна сума.'; return; }
-      state.metrics.revenueCurrent += amount;
       const result = state.consultants.find(item => item.name === consultant);
-      if (result) result.turnover = Number(result.turnover || 0) + amount;
+      const record = dailyRecord(result, date, true);
+      if (record) record.turnover = Number(record.turnover || 0) + amount;
+      syncStoreTotalsFromConsultants();
       touchUpdatedTime();
     } else if (action === 'warranty') {
       const amount = Number(formData.get('amount'));
       const consultant = String(formData.get('consultant'));
+      const date = String(formData.get('date'));
       if (!(amount > 0)) { error.textContent = 'Въведи валидна сума.'; return; }
-      state.metrics.warrantyCurrent += amount;
-      state.metrics.warrantyCount += 1;
       const result = state.consultants.find(item => item.name === consultant);
-      if (result) result.warranty = Number(result.warranty || 0) + amount;
+      const record = dailyRecord(result, date, true);
+      if (record) {
+        record.warranty = Number(record.warranty || 0) + amount;
+        record.warrantyCount = Number(record.warrantyCount || 0) + 1;
+      }
+      syncStoreTotalsFromConsultants();
+      touchUpdatedTime();
+    } else if (action === 'consultant-edit') {
+      const oldName = String(formData.get('consultant'));
+      const newName = String(formData.get('name') || '').trim();
+      const consultant = state.consultants.find(item => item.name === oldName);
+      const date = String(formData.get('date'));
+      const turnover = Number(formData.get('turnover'));
+      const warranty = Number(formData.get('warranty'));
+      const warrantyCount = Number(formData.get('warrantyCount'));
+      if (!consultant || !newName || !date.startsWith(`${activeMonth}-`) || turnover < 0 || warranty < 0 || warrantyCount < 0 || !Number.isInteger(warrantyCount)) { error.textContent = 'Провери името, датата и въведените стойности.'; return; }
+      if (newName !== oldName && state.consultants.some(item => item.name.toLocaleLowerCase('bg-BG') === newName.toLocaleLowerCase('bg-BG'))) { error.textContent = 'Вече има служител с това име.'; return; }
+      Object.assign(dailyRecord(consultant, date, true), { turnover, warranty, warrantyCount });
+      if (newName !== oldName) {
+        consultant.name = newName;
+        const employeeIndex = EMPLOYEES.indexOf(oldName);
+        if (employeeIndex >= 0) EMPLOYEES[employeeIndex] = newName;
+        state.employees = [...EMPLOYEES];
+        Object.entries(state.schedules).forEach(([month, schedule]) => {
+          schedule[newName] = schedule[oldName] || Array(daysInMonth(month)).fill('✕');
+          delete schedule[oldName];
+        });
+        state.schedule = state.schedules[activeMonth];
+        state.tasks.forEach(task => { if (task.owner === oldName) task.owner = newName; });
+      }
+      syncStoreTotalsFromConsultants();
       touchUpdatedTime();
     } else if (action === 'goals') {
-      const values = ['revenueCurrent', 'revenueTarget', 'warrantyCurrent', 'warrantyTarget'].reduce((result, key) => ({ ...result, [key]: Number(formData.get(key)) }), {});
-      if (values.revenueCurrent < 0 || values.warrantyCurrent < 0 || !(values.revenueTarget > 0) || !(values.warrantyTarget > 0)) { error.textContent = 'Стойностите и целите трябва да са валидни.'; return; }
+      const values = { revenueTarget: Number(formData.get('revenueTarget')), warrantyTarget: Number(formData.get('warrantyTarget')) };
+      if (!(values.revenueTarget > 0) || !(values.warrantyTarget > 0)) { error.textContent = 'Целите трябва да са валидни.'; return; }
+      state.monthGoals[activeMonth] = values;
       Object.assign(state.metrics, values);
       touchUpdatedTime();
     } else if (action === 'schedule') {
       const day = Number(formData.get('day'));
       const employee = String(formData.get('employee'));
       const code = String(formData.get('code'));
-      if (!state.schedule[employee] || !SCHEDULE_CODES[code] || day < 1 || day > 31) { error.textContent = 'Избери валиден ден и служител.'; return; }
+      if (!state.schedule[employee] || !SCHEDULE_CODES[code] || day < 1 || day > daysInMonth(activeMonth)) { error.textContent = 'Избери валиден ден и служител.'; return; }
       state.schedule[employee][day - 1] = code;
       selectedDay = day;
     } else if (action === 'notice') {
@@ -1397,12 +1620,29 @@
   $$('[data-nav]').forEach(button => button.addEventListener('click', () => openView(button.dataset.nav)));
   $$('[data-open-view]').forEach(button => button.addEventListener('click', () => openView(button.dataset.openView)));
 
-  $$('.view[data-view="home"] .date-btn').forEach(button => button.addEventListener('click', () => {
-    $$('.view[data-view="home"] .date-btn').forEach(item => item.classList.remove('active'));
-    button.classList.add('active');
-    selectedDay = Number(button.dataset.day);
-    renderTeamDay(selectedDay);
-  }));
+  function bindDateStrip(strip) {
+    let startX = 0;
+    let startY = 0;
+    strip.addEventListener('click', event => {
+      const button = event.target.closest('.date-btn');
+      if (!button) return;
+      setSelectedDate(activeMonth, Number(button.dataset.day));
+    });
+    strip.addEventListener('touchstart', event => {
+      startX = event.changedTouches[0].clientX;
+      startY = event.changedTouches[0].clientY;
+    }, { passive: true });
+    strip.addEventListener('touchend', event => {
+      const deltaX = event.changedTouches[0].clientX - startX;
+      const deltaY = event.changedTouches[0].clientY - startY;
+      if (Math.abs(deltaX) > 42 && Math.abs(deltaX) > Math.abs(deltaY)) moveSelectedDay(deltaX < 0 ? 1 : -1);
+    }, { passive: true });
+  }
+  bindDateStrip($('#homeDateStrip'));
+  bindDateStrip($('#scheduleDateStrip'));
+
+  $('#resultMonthPicker').addEventListener('change', event => switchMonth(event.target.value));
+  $('#scheduleMonthPicker').addEventListener('change', event => switchMonth(event.target.value));
 
   $$('.filter').forEach(button => button.addEventListener('click', () => {
     $$('.filter').forEach(item => item.classList.remove('active'));
@@ -1415,7 +1655,9 @@
     $$('[data-schedule-mode]').forEach(item => item.classList.remove('active'));
     button.classList.add('active');
     const monthMode = button.dataset.scheduleMode === 'month';
-    $('#scheduleList').style.display = monthMode ? 'none' : 'block';
+    $('#scheduleDayFocus').style.display = monthMode ? 'none' : 'block';
+    $('#scheduleDateStrip').style.display = monthMode ? 'none' : 'grid';
+    $('#scheduleDateStrip').nextElementSibling.style.display = monthMode ? 'none' : 'block';
     $('#monthWrap').classList.toggle('active', monthMode);
   }));
 
@@ -1465,6 +1707,13 @@
   });
 
   $('#editorForm').addEventListener('submit', handleEditorSubmit);
+  $('#calendarForm').addEventListener('submit', event => {
+    event.preventDefault();
+    const value = $('#calendarDate').value;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return;
+    setSelectedDate(value.slice(0, 7), Number(value.slice(8)), true);
+    closeBackdrop($('#calendarBackdrop'));
+  });
 
   document.addEventListener('click', event => {
     const actionButton = event.target.closest('[data-manager-action]');
@@ -1472,6 +1721,9 @@
 
     const editButton = event.target.closest('[data-task-edit]');
     if (editButton) openEditor('task-edit', { id: Number(editButton.dataset.taskEdit) });
+
+    const consultantEditButton = event.target.closest('[data-consultant-edit]');
+    if (consultantEditButton) openEditor('consultant-edit', { employee: consultantEditButton.dataset.consultantEdit });
 
     const deleteButton = event.target.closest('[data-task-delete]');
     if (deleteButton && managerMode && confirm('Да изтрия ли тази задача?')) {
@@ -1489,6 +1741,12 @@
     const dayButton = event.target.closest('[data-edit-day]');
     if (dayButton) openEditor('schedule', { day: Number(dayButton.dataset.editDay) });
 
+    const selectDayButton = event.target.closest('[data-select-day]');
+    if (selectDayButton) {
+      setSelectedDate(activeMonth, Number(selectDayButton.dataset.selectDay));
+      document.querySelector('[data-schedule-mode="days"]').click();
+    }
+
     const cell = event.target.closest('[data-cell-employee]');
     if (cell && managerMode) openEditor('schedule', { employee: cell.dataset.cellEmployee, day: Number(cell.dataset.cellDay) });
   });
@@ -1498,13 +1756,18 @@
     if (target === 'login') closeBackdrop($('#loginBackdrop'));
     if (target === 'editor') closeBackdrop($('#editorBackdrop'));
     if (target === 'manager-panel') closeBackdrop($('#managerPanelBackdrop'));
+    if (target === 'calendar') closeBackdrop($('#calendarBackdrop'));
   }));
 
   $$('.form-backdrop').forEach(backdrop => backdrop.addEventListener('click', event => { if (event.target === backdrop) closeBackdrop(backdrop); }));
   document.addEventListener('keydown', event => { if (event.key === 'Escape') $$('.form-backdrop.open').forEach(closeBackdrop); });
   $('#notifyBtn').addEventListener('click', () => showToast('Имате 2 нови известия от екипа'));
   $('#themeBtn').addEventListener('click', () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'));
-  $('#calendarBtn').addEventListener('click', () => document.querySelector('[data-schedule-day="8"]')?.scrollIntoView({ block: 'center', behavior: 'smooth' }));
+  $('#calendarBtn').addEventListener('click', () => {
+    $('#calendarDate').value = `${activeMonth}-${String(selectedDay).padStart(2, '0')}`;
+    openBackdrop($('#calendarBackdrop'));
+    setTimeout(() => $('#calendarDate').focus(), 80);
+  });
 
   setTheme(document.documentElement.dataset.theme);
   setManagerMode(managerMode);
