@@ -8,6 +8,10 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Work Plan">
   <meta name="description" content="Мобилен работен център за Техномаркет Парк Център">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
   <title>Техномаркет · Work Plan</title>
   <script>
     try { document.documentElement.dataset.theme = localStorage.getItem('tm-work-plan-theme') || 'light'; } catch (_) {}
@@ -1505,7 +1509,7 @@
   setTheme(document.documentElement.dataset.theme);
   setManagerMode(managerMode);
   renderAll();
-  if ('serviceWorker' in navigator && location.protocol.startsWith('http')) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+  if ('serviceWorker' in navigator && location.protocol.startsWith('http')) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(() => {}));
 })();
 
   </script>

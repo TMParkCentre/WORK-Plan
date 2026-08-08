@@ -1,0 +1,26 @@
+{
+  "name": "Техномаркет Парк Център · Work Plan",
+  "short_name": "Work Plan",
+  "description": "Мобилен работен център за екипа на Техномаркет Парк Център",
+  "lang": "bg",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f8f5f6",
+  "theme_color": "#e30613",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

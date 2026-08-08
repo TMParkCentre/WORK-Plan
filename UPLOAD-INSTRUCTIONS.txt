@@ -1,0 +1,25 @@
+ТЕХНОМАРКЕТ WORK PLAN — КАЧВАНЕ В GITHUB PAGES
+
+1. В същата папка, в която се намира сегашният index.html, качи:
+   - index.html (замени стария файл)
+   - manifest.json
+   - sw.js
+   - icon-192.png
+   - icon-512.png
+   - apple-touch-icon.png
+
+2. Натисни Commit changes в GitHub.
+
+3. Изчакай GitHub Pages да обнови сайта и отвори:
+   https://tmparkcentre.github.io/WORK-Plan/
+
+4. Android / Chrome:
+   Отвори менюто на Chrome и избери Install app или Add to Home screen.
+
+5. iPhone / Safari:
+   Отвори сайта в Safari → Share → Add to Home Screen → Add.
+
+Ако вече имаш стара икона на началния екран, изтрий я и добави приложението
+отново. Така телефонът ще зареди новото червено лого с бяло T.
+
+Важно: всички файлове трябва да са в една и съща папка до index.html.
