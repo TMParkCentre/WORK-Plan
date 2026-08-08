@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- TECHNOMARKET WORK PLAN · BUILD 4.0 · 2026-08-08 -->
+<!-- TECHNOMARKET WORK PLAN · BUILD 5.0 · FIREBASE SYNC · 2026-08-08 -->
 <html lang="bg" data-theme="light">
 <head>
   <meta charset="utf-8">
@@ -143,12 +143,19 @@
     .icon-btn:active { transform: scale(.95); }
     .dot {
       position: absolute;
-      top: 8px; right: 8px;
-      width: 7px; height: 7px;
-      border-radius: 50%;
+      top: 4px; right: 3px;
+      display: none;
+      place-items: center;
+      min-width: 17px; height: 17px;
+      padding: 0 4px;
+      color: white;
+      font-size: 8px;
+      font-weight: 900;
+      border-radius: 99px;
       background: var(--red);
       border: 2px solid white;
     }
+    .dot.show { display:grid; }
     .avatar {
       display: grid;
       place-items: center;
@@ -767,6 +774,15 @@
     .build-version { margin:14px 0 0; color:var(--muted); font-size:8px; text-align:center; }
     .month-day-btn { width:100%; min-width:26px; padding:6px 3px; color:inherit; font:800 9px/1 inherit; border:0; border-radius:8px; background:transparent; cursor:pointer; }
     .month-day-btn.active { color:#fff; background:var(--red); }
+    .notification-list { display:grid; gap:9px; margin-bottom:14px; }
+    .notification-item { display:grid; grid-template-columns:36px 1fr auto; gap:10px; align-items:start; padding:12px; border:1px solid #eee4e6; border-radius:16px; background:#fcfafb; }
+    .notification-item.unread { border-color:rgba(227,6,19,.2); background:#fff5f6; }
+    .notification-icon { display:grid; place-items:center; width:36px; height:36px; color:var(--red); border-radius:12px; background:#fff0f2; }
+    .notification-copy strong { display:block; font-size:10px; }
+    .notification-copy p { margin:4px 0 0; color:var(--muted); font-size:9px; line-height:1.4; }
+    .notification-copy time { display:block; margin-top:5px; color:#aaa0a3; font-size:7px; }
+    .notification-delete { width:29px; height:29px; color:var(--muted); border:1px solid #eadfe2; border-radius:9px; background:white; cursor:pointer; }
+    .notification-empty { padding:28px 12px; color:var(--muted); font-size:10px; text-align:center; }
     .theme-sun { display: none; }
     html[data-theme="dark"] .theme-moon { display: none; }
     html[data-theme="dark"] .theme-sun { display: block; }
@@ -822,6 +838,9 @@
     html[data-theme="dark"] .consultant-avatar { color:#ff8991; border-color:#513238; background:#351e23; }
     html[data-theme="dark"] .consultant-stat { background:rgba(227,6,19,.09); }
     html[data-theme="dark"] .consultant-meter { background:#403438; }
+    html[data-theme="dark"] .notification-item { border-color:#403438; background:#2a2326; }
+    html[data-theme="dark"] .notification-item.unread { border-color:rgba(255,61,73,.34); background:#321f23; }
+    html[data-theme="dark"] .notification-delete { color:var(--muted); border-color:#4a3b3f; background:#211b1e; }
     html[data-theme="dark"] .toast { background:#f7f3f4; color:#171315; }
 
     @media (min-width: 760px) {
@@ -858,7 +877,7 @@
         </button>
         <button class="icon-btn" id="notifyBtn" aria-label="Известия">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
-          <span class="dot"></span>
+          <span class="dot" id="notificationBadge"></span>
         </button>
         <button class="icon-btn" id="managerBtn" aria-label="Вход за управител" title="Вход за управител">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
@@ -1013,7 +1032,7 @@
         <button class="manager-tile" data-manager-action="schedule"><i>▦</i><strong>График</strong><span>Промени смяна или отсъствие</span></button>
         <button class="manager-tile" data-manager-action="notice"><i>⌁</i><strong>Съобщение</strong><span>Обнови известието за екипа</span></button>
       </div>
-      <p class="build-version">WORK PLAN · версия 4.0</p>
+      <p class="build-version">WORK PLAN · версия 5.0 · Firebase Sync</p>
     </div>
   </div>
   <div class="form-backdrop" id="calendarBackdrop" aria-hidden="true">
@@ -1024,9 +1043,30 @@
       <button class="form-submit" type="submit">Покажи датата</button>
     </form>
   </div>
+  <div class="form-backdrop" id="notificationsBackdrop" aria-hidden="true">
+    <div class="form-panel">
+      <div class="grabber"></div>
+      <div class="form-head"><div><h3>Известия</h3><p>Промени по задачи, график, цели и резултати.</p></div><button class="close-btn" type="button" data-close="notifications">×</button></div>
+      <div class="notification-list" id="notificationList"></div>
+      <button class="form-submit" type="button" id="clearNotifications">Изчисти всички видени</button>
+    </div>
+  </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script>
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+
+const firebaseApp = initializeApp({
+  apiKey: "AIzaSyARDaBBA-n90uoKmiZ5ItD0akuXZUiaAwk",
+  authDomain: "work-planning-bccab.firebaseapp.com",
+  projectId: "work-planning-bccab",
+  storageBucket: "work-planning-bccab.firebasestorage.app",
+  messagingSenderId: "169526142920",
+  appId: "1:169526142920:web:c9b5c045596ed5883182fd"
+});
+const firestore = getFirestore(firebaseApp);
+
 (() => {
   'use strict';
 
@@ -1061,6 +1101,7 @@
       title: 'Гаранции ЗК Алианц · август',
       text: 'Следим месечната цел и актуалния прогрес на екипа.'
     },
+    notifications: [],
     consultants: [
       { name: 'Васил', turnover: 17458, warranty: 165.60, warrantyCount: 1 },
       { name: 'Деси', turnover: 14564, warranty: 151.20, warrantyCount: 1 },
@@ -1162,6 +1203,18 @@
   let pendingAction = null;
   let toastTimer;
   let managerMode = sessionStorage.getItem('tm-manager-mode') === '1';
+  const remoteStateRef = doc(firestore, 'config', 'workPlanV5');
+  let remoteReady = false;
+  let remoteExists = false;
+  let applyingRemote = false;
+  let remoteSaveTimer;
+  let firebaseErrorShown = false;
+  let readNotificationIds = new Set();
+  let dismissedNotificationIds = new Set();
+  try {
+    readNotificationIds = new Set(JSON.parse(localStorage.getItem('tm-read-notifications') || '[]'));
+    dismissedNotificationIds = new Set(JSON.parse(localStorage.getItem('tm-dismissed-notifications') || '[]'));
+  } catch (_) {}
 
   const $ = selector => document.querySelector(selector);
   const $$ = selector => Array.from(document.querySelectorAll(selector));
@@ -1185,7 +1238,7 @@
     ensureMonthState(activeMonth);
     selectedDay = Math.max(1, Math.min(daysInMonth(activeMonth), Number(day) || 1));
     syncStoreTotalsFromConsultants();
-    saveState();
+    saveState({ remote: false });
     renderAll();
     if (notify) showToast(`Показва се ${selectedDay} ${monthName(activeMonth)}`);
   }
@@ -1204,8 +1257,125 @@
     showToast(`Показва се ${monthTitle(activeMonth)}`);
   }
 
-  function saveState() {
+  function saveState({ remote = true } = {}) {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) {}
+    if (remote && remoteReady && !applyingRemote && (remoteExists || managerMode)) {
+      clearTimeout(remoteSaveTimer);
+      remoteSaveTimer = setTimeout(async () => {
+        try {
+          await setDoc(remoteStateRef, { schemaVersion: 5, state: clone(state), updatedAtMs: Date.now() });
+          remoteExists = true;
+        } catch (error) {
+          if (!firebaseErrorShown) {
+            firebaseErrorShown = true;
+            showToast('Няма връзка с общата база. Промените са запазени само на това устройство.');
+          }
+          console.error('Firebase save failed', error);
+        }
+      }, 180);
+    }
+  }
+
+  function addNotification(title, message, icon = '⌁') {
+    if (!Array.isArray(state.notifications)) state.notifications = [];
+    state.notifications.unshift({ id: `n_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`, title, message, icon, createdAt: new Date().toISOString() });
+    state.notifications = state.notifications.slice(0, 60);
+  }
+
+  function persistNotificationPrefs() {
+    try {
+      localStorage.setItem('tm-read-notifications', JSON.stringify([...readNotificationIds]));
+      localStorage.setItem('tm-dismissed-notifications', JSON.stringify([...dismissedNotificationIds]));
+    } catch (_) {}
+  }
+
+  function visibleNotifications() {
+    return (state.notifications || []).filter(item => !dismissedNotificationIds.has(item.id));
+  }
+
+  function renderNotifications() {
+    const visible = visibleNotifications();
+    const unread = visible.filter(item => !readNotificationIds.has(item.id));
+    const badge = $('#notificationBadge');
+    badge.textContent = unread.length > 9 ? '9+' : String(unread.length);
+    badge.classList.toggle('show', unread.length > 0);
+    $('#notificationList').innerHTML = visible.length ? visible.map(item => `<article class="notification-item ${readNotificationIds.has(item.id) ? '' : 'unread'}"><span class="notification-icon">${escapeHtml(item.icon || '⌁')}</span><div class="notification-copy"><strong>${escapeHtml(item.title || 'Известие')}</strong><p>${escapeHtml(item.message || '')}</p><time>${escapeHtml(new Intl.DateTimeFormat('bg-BG', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' }).format(new Date(item.createdAt || Date.now())))}</time></div><button class="notification-delete" type="button" data-dismiss-notification="${escapeHtml(item.id)}" aria-label="Изтрий известието">×</button></article>`).join('') : '<div class="notification-empty">Няма нови известия.</div>';
+  }
+
+  function normalizeRemoteState(remoteState) {
+    const next = {
+      ...clone(DEFAULT_STATE),
+      ...clone(remoteState),
+      metrics: { ...clone(DEFAULT_STATE.metrics), ...(remoteState.metrics || {}) },
+      notice: { ...clone(DEFAULT_STATE.notice), ...(remoteState.notice || {}) }
+    };
+    state = next;
+    if (Array.isArray(state.employees) && state.employees.length) EMPLOYEES.splice(0, EMPLOYEES.length, ...state.employees);
+    else state.employees = [...EMPLOYEES];
+    if (!Array.isArray(state.consultants)) state.consultants = clone(DEFAULT_STATE.consultants);
+    EMPLOYEES.forEach(name => {
+      if (!state.consultants.some(item => item.name === name)) state.consultants.push({ name, turnover: 0, warranty: 0, warrantyCount: 0, daily: {} });
+    });
+    state.notifications = Array.isArray(state.notifications) ? state.notifications : [];
+    state.schedules = state.schedules && typeof state.schedules === 'object' ? state.schedules : { [DEFAULT_MONTH]: clone(state.schedule || DEFAULT_STATE.schedule) };
+    state.monthGoals = state.monthGoals && typeof state.monthGoals === 'object' ? state.monthGoals : { [DEFAULT_MONTH]: { revenueTarget: Number(state.metrics.revenueTarget) || 250000, warrantyTarget: Number(state.metrics.warrantyTarget) || 4500 } };
+    ensureMonthState(activeMonth);
+    syncStoreTotalsFromConsultants();
+    state.tasks = (state.tasks || []).map(task => ({ ...task, owner: task.owner === 'Екипна' ? 'Целия екип' : task.owner }));
+  }
+
+  async function publishInitialRemoteState() {
+    if (remoteExists || !managerMode) return;
+    try {
+      if (!remoteReady) {
+        const existing = await getDoc(remoteStateRef);
+        remoteReady = true;
+        if (existing.exists()) {
+          remoteExists = true;
+          const payload = existing.data()?.state;
+          if (payload) {
+            applyingRemote = true;
+            normalizeRemoteState(payload);
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) {}
+            renderAll();
+            applyingRemote = false;
+          }
+          return;
+        }
+      }
+      await setDoc(remoteStateRef, { schemaVersion: 5, state: clone(state), updatedAtMs: Date.now() });
+      remoteExists = true;
+      showToast('Общата база е активирана. Екипът вече получава промените.');
+    } catch (error) {
+      showToast('Firebase не разреши запис. Провери Firestore Rules.');
+      console.error('Firebase initial publish failed', error);
+    }
+  }
+
+  function startRemoteSync() {
+    onSnapshot(remoteStateRef, snapshot => {
+      remoteReady = true;
+      if (!snapshot.exists()) {
+        remoteExists = false;
+        if (managerMode) publishInitialRemoteState();
+        return;
+      }
+      remoteExists = true;
+      const payload = snapshot.data()?.state;
+      if (!payload) return;
+      applyingRemote = true;
+      normalizeRemoteState(payload);
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) {}
+      renderAll();
+      applyingRemote = false;
+    }, error => {
+      remoteReady = false;
+      if (!firebaseErrorShown) {
+        firebaseErrorShown = true;
+        showToast('Приложението работи локално, но Firebase не е достъпен.');
+      }
+      console.error('Firebase listener failed', error);
+    });
   }
 
   function showToast(message) {
@@ -1404,6 +1574,7 @@
     renderMetrics();
     renderSchedule();
     renderDateStrip();
+    renderNotifications();
   }
 
   function openView(name) {
@@ -1538,6 +1709,7 @@
       if (!taskData.title || !taskData.time) { error.textContent = 'Попълни заглавие и час.'; return; }
       if (action === 'task-edit') Object.assign(state.tasks.find(item => Number(item.id) === Number(payload.id)), taskData);
       else state.tasks.push({ id: Date.now(), ...taskData, done: false });
+      addNotification(action === 'task-edit' ? 'Задача е редактирана' : 'Нова задача', `${taskData.title} · ${taskData.owner}`, '✓');
     } else if (action === 'turnover') {
       const amount = Number(formData.get('amount'));
       const consultant = String(formData.get('consultant'));
@@ -1548,6 +1720,7 @@
       if (record) record.turnover = Number(record.turnover || 0) + amount;
       syncStoreTotalsFromConsultants();
       touchUpdatedTime();
+      addNotification('Оборотът е обновен', `${consultant} · ${formatMoney(amount)} € · ${date}`, '↗');
     } else if (action === 'warranty') {
       const amount = Number(formData.get('amount'));
       const consultant = String(formData.get('consultant'));
@@ -1561,6 +1734,7 @@
       }
       syncStoreTotalsFromConsultants();
       touchUpdatedTime();
+      addNotification('Добавена гаранция', `${consultant} · ${formatMoney(amount)} € · ${date}`, '◇');
     } else if (action === 'consultant-edit') {
       const oldName = String(formData.get('consultant'));
       const newName = String(formData.get('name') || '').trim();
@@ -1586,12 +1760,14 @@
       }
       syncStoreTotalsFromConsultants();
       touchUpdatedTime();
+      addNotification('Резултат е коригиран', `${newName} · ${date}`, '✎');
     } else if (action === 'goals') {
       const values = { revenueTarget: Number(formData.get('revenueTarget')), warrantyTarget: Number(formData.get('warrantyTarget')) };
       if (!(values.revenueTarget > 0) || !(values.warrantyTarget > 0)) { error.textContent = 'Целите трябва да са валидни.'; return; }
       state.monthGoals[activeMonth] = values;
       Object.assign(state.metrics, values);
       touchUpdatedTime();
+      addNotification('Месечните цели са променени', `${monthTitle(activeMonth)} · оборот ${formatMoney(values.revenueTarget)} €`, '◎');
     } else if (action === 'schedule') {
       const day = Number(formData.get('day'));
       const employee = String(formData.get('employee'));
@@ -1599,11 +1775,13 @@
       if (!state.schedule[employee] || !SCHEDULE_CODES[code] || day < 1 || day > daysInMonth(activeMonth)) { error.textContent = 'Избери валиден ден и служител.'; return; }
       state.schedule[employee][day - 1] = code;
       selectedDay = day;
+      addNotification('Промяна в графика', `${employee} · ${day} ${monthName(activeMonth)} · ${SCHEDULE_CODES[code].label}`, '▦');
     } else if (action === 'notice') {
       const title = String(formData.get('title') || '').trim();
       const text = String(formData.get('text') || '').trim();
       if (!title || !text) { error.textContent = 'Попълни заглавие и текст.'; return; }
       state.notice = { title, text };
+      addNotification(title, text, '⌁');
     }
 
     saveState();
@@ -1690,6 +1868,7 @@
     $('#loginError').textContent = '';
     $('#managerPassword').value = '';
     setManagerMode(true);
+    publishInitialRemoteState();
     closeBackdrop($('#loginBackdrop'));
     showToast('Управителският режим е отключен');
     if (pendingAction) {
@@ -1725,10 +1904,19 @@
     const consultantEditButton = event.target.closest('[data-consultant-edit]');
     if (consultantEditButton) openEditor('consultant-edit', { employee: consultantEditButton.dataset.consultantEdit });
 
+    const dismissNotificationButton = event.target.closest('[data-dismiss-notification]');
+    if (dismissNotificationButton) {
+      dismissedNotificationIds.add(dismissNotificationButton.dataset.dismissNotification);
+      persistNotificationPrefs();
+      renderNotifications();
+    }
+
     const deleteButton = event.target.closest('[data-task-delete]');
     if (deleteButton && managerMode && confirm('Да изтрия ли тази задача?')) {
+      const deletedTask = state.tasks.find(item => Number(item.id) === Number(deleteButton.dataset.taskDelete));
       state.tasks = state.tasks.filter(item => Number(item.id) !== Number(deleteButton.dataset.taskDelete));
-      saveState(); renderTasks(); showToast('Задачата е изтрита');
+      if (deletedTask) addNotification('Задача е изтрита', deletedTask.title, '×');
+      saveState(); renderAll(); showToast('Задачата е изтрита');
     }
 
     const checkButton = event.target.closest('.check');
@@ -1757,11 +1945,22 @@
     if (target === 'editor') closeBackdrop($('#editorBackdrop'));
     if (target === 'manager-panel') closeBackdrop($('#managerPanelBackdrop'));
     if (target === 'calendar') closeBackdrop($('#calendarBackdrop'));
+    if (target === 'notifications') closeBackdrop($('#notificationsBackdrop'));
   }));
 
   $$('.form-backdrop').forEach(backdrop => backdrop.addEventListener('click', event => { if (event.target === backdrop) closeBackdrop(backdrop); }));
   document.addEventListener('keydown', event => { if (event.key === 'Escape') $$('.form-backdrop.open').forEach(closeBackdrop); });
-  $('#notifyBtn').addEventListener('click', () => showToast('Имате 2 нови известия от екипа'));
+  $('#notifyBtn').addEventListener('click', () => {
+    visibleNotifications().forEach(item => readNotificationIds.add(item.id));
+    persistNotificationPrefs();
+    renderNotifications();
+    openBackdrop($('#notificationsBackdrop'));
+  });
+  $('#clearNotifications').addEventListener('click', () => {
+    visibleNotifications().forEach(item => dismissedNotificationIds.add(item.id));
+    persistNotificationPrefs();
+    renderNotifications();
+  });
   $('#themeBtn').addEventListener('click', () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'));
   $('#calendarBtn').addEventListener('click', () => {
     $('#calendarDate').value = `${activeMonth}-${String(selectedDay).padStart(2, '0')}`;
@@ -1772,6 +1971,7 @@
   setTheme(document.documentElement.dataset.theme);
   setManagerMode(managerMode);
   renderAll();
+  startRemoteSync();
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(() => {}));
 })();
 
