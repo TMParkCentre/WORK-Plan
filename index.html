@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- TECHNOMARKET WORK PLAN · BUILD 5.0 · FIREBASE SYNC · 2026-08-08 -->
+<!-- TECHNOMARKET WORK PLAN · BUILD 5.1 · FULL TASK TEXT · 2026-08-10 -->
 <html lang="bg" data-theme="light">
 <head>
   <meta charset="utf-8">
@@ -93,7 +93,7 @@
       top: 0;
       z-index: 30;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
       min-height: 78px;
       padding: calc(13px + env(safe-area-inset-top)) 20px 13px;
@@ -362,10 +362,19 @@
       cursor: pointer;
     }
     .task-card.done .check { color: white; border-color: var(--green); background: var(--green); }
-    .task-body { flex: 1; min-width: 0; }
-    .task-title { display: block; font-size: 12px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .task-meta { display: flex; gap: 7px; margin-top: 5px; color: var(--muted); font-size: 9px; }
-    .priority { flex: 0 0 auto; padding: 6px 8px; color: var(--red); font-size: 8px; font-weight: 850; border-radius: 9px; background: #fff0f2; }
+    .task-body { flex: 1; min-width: 0; padding-top: 2px; }
+    .task-title {
+      display: block;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.4;
+      white-space: normal;
+      overflow: visible;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+    .task-meta { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 6px; color: var(--muted); font-size: 9px; }
+    .priority { flex: 0 0 auto; margin-top: 1px; padding: 6px 8px; color: var(--red); font-size: 8px; font-weight: 850; border-radius: 9px; background: #fff0f2; }
 
     .page-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
     .page-head h1 { margin: 0; font-size: 28px; }
@@ -1032,7 +1041,7 @@
         <button class="manager-tile" data-manager-action="schedule"><i>▦</i><strong>График</strong><span>Промени смяна или отсъствие</span></button>
         <button class="manager-tile" data-manager-action="notice"><i>⌁</i><strong>Съобщение</strong><span>Обнови известието за екипа</span></button>
       </div>
-      <p class="build-version">WORK PLAN · версия 5.0 · Firebase Sync</p>
+      <p class="build-version">WORK PLAN · версия 5.1 · Firebase Sync</p>
     </div>
   </div>
   <div class="form-backdrop" id="calendarBackdrop" aria-hidden="true">
