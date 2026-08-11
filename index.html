@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- TECHNOMARKET WORK PLAN · BUILD 5.4 · OPTIMIZED HOME + TRAINING NAV + TASK ARCHIVE · 2026-08-11 -->
+<!-- TECHNOMARKET WORK PLAN · BUILD 5.5 · STABLE EXTERNAL ACADEMY LAUNCH · 2026-08-11 -->
 <html lang="bg" data-theme="light">
 <head>
   <meta charset="utf-8">
@@ -13,6 +13,8 @@
   <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png">
   <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+  <link rel="dns-prefetch" href="//technomarket-warranty-academy.badahboby1996.chatgpt.site">
+  <link rel="preconnect" href="https://technomarket-warranty-academy.badahboby1996.chatgpt.site" crossorigin>
   <title>Техномаркет · Work Plan</title>
   <script>
     try { document.documentElement.dataset.theme = localStorage.getItem('tm-work-plan-theme') || 'light'; } catch (_) {}
@@ -839,6 +841,7 @@
 
     .training-grid { display:grid; gap:12px; }
     .training-card {
+      display:block;
       position:relative;
       width:100%;
       min-height:176px;
@@ -850,6 +853,7 @@
       border-radius:25px;
       background:radial-gradient(circle at 96% 4%,rgba(255,255,255,.20),transparent 34%),linear-gradient(145deg,#7d000b,#e30613 70%,#ff3a43);
       box-shadow:0 18px 38px rgba(160,0,15,.22);
+      text-decoration:none;
       cursor:pointer;
     }
     .training-card::after { content:""; position:absolute; width:150px; height:150px; right:-70px; bottom:-86px; border:1px solid rgba(255,255,255,.24); border-radius:50%; }
@@ -860,15 +864,6 @@
     .training-placeholder { padding:17px; border:1px dashed #ddd2d5; border-radius:20px; background:rgba(255,255,255,.58); }
     .training-placeholder strong { display:block; font-size:11px; }
     .training-placeholder span { display:block; margin-top:4px; color:var(--muted); font-size:9px; }
-
-    .academy-backdrop { padding:0; background:#151012; }
-    .academy-panel { display:grid; grid-template-rows:auto 1fr; width:min(100%,540px); height:100dvh; max-height:none; padding:0; overflow:hidden; border-radius:0; background:#fff; }
-    .academy-toolbar { display:flex; align-items:center; gap:11px; min-height:calc(58px + env(safe-area-inset-top)); padding:calc(10px + env(safe-area-inset-top)) 12px 10px; color:var(--ink); border-bottom:1px solid #eee5e7; background:var(--surface); }
-    .academy-toolbar-copy { flex:1; min-width:0; }
-    .academy-toolbar-copy strong { display:block; overflow:hidden; font-size:11px; text-overflow:ellipsis; white-space:nowrap; }
-    .academy-toolbar-copy span { display:block; margin-top:2px; color:var(--muted); font-size:8px; }
-    .academy-frame { width:100%; height:100%; border:0; background:#f7f3f4; }
-    .academy-external { display:grid; place-items:center; width:36px; height:36px; color:var(--red); text-decoration:none; border:1px solid rgba(227,6,19,.16); border-radius:11px; background:#fff3f4; }
 
     .history-summary { display:grid; grid-template-columns:1fr auto; gap:12px; align-items:end; margin-bottom:15px; padding:16px; color:#fff; border-radius:20px; background:linear-gradient(145deg,#2b2023,#130f11); }
     .history-summary small { display:block; margin-bottom:5px; color:rgba(255,255,255,.62); font-size:8px; font-weight:800; text-transform:uppercase; letter-spacing:.07em; }
@@ -955,8 +950,6 @@
     html[data-theme="dark"] .learning-launch { border-color:#413437; background:radial-gradient(circle at 100% 0,rgba(255,61,73,.12),transparent 42%),linear-gradient(145deg,#2a2326,#211b1e); }
     html[data-theme="dark"] .training-placeholder,
     html[data-theme="dark"] .history-day { border-color:#403438; background:#2a2326; }
-    html[data-theme="dark"] .academy-panel { background:#171315; }
-    html[data-theme="dark"] .academy-toolbar { border-color:#3a3033; }
 
     @media (min-width: 760px) {
       body { padding: 24px 0; }
@@ -1102,12 +1095,12 @@
       <section class="view" data-view="training">
         <div class="page-head"><div><p class="eyebrow">Техномаркет Academy</p><h1>Обучения</h1><p>Избери тема и започни обучението</p></div><button class="mini-btn" type="button" data-open-view="home">← Начало</button></div>
         <div class="training-grid">
-          <button class="training-card" type="button" data-training-url="https://technomarket-warranty-academy.badahboby1996.chatgpt.site/" data-training-title="Продажба на допълнителни гаранции">
+          <a class="training-card" href="https://technomarket-warranty-academy.badahboby1996.chatgpt.site/" target="_blank" rel="noopener noreferrer external" data-training-link aria-label="Отвори обучението за допълнителни гаранции в отделен прозорец">
             <span class="training-badge">Активно обучение</span>
             <h2>Продажба на допълнителни гаранции</h2>
-            <p>Практични техники, реални ситуации и уверено представяне на услугата.</p>
-            <span class="training-card-footer"><span>За целия екип</span><span>Отвори академията →</span></span>
-          </button>
+            <p>Практични техники, реални ситуации и уверено представяне на услугата. Отваря се отделно за по-стабилна работа.</p>
+            <span class="training-card-footer"><span>За целия екип</span><span>Отвори обучението ↗</span></span>
+          </a>
           <div class="training-placeholder"><strong>Следващи обучения</strong><span>Новите теми ще се появяват тук като отделни карти.</span></div>
         </div>
       </section>
@@ -1163,7 +1156,7 @@
         <button class="manager-tile" data-manager-action="schedule"><i>▦</i><strong>График</strong><span>Промени смяна или отсъствие</span></button>
         <button class="manager-tile" data-manager-action="notice"><i>⌁</i><strong>Съобщение</strong><span>Обнови известието за екипа</span></button>
       </div>
-      <p class="build-version">WORK PLAN · версия 5.4 · Firebase Sync</p>
+      <p class="build-version">WORK PLAN · версия 5.5 · Firebase Sync</p>
     </div>
   </div>
   <div class="form-backdrop" id="calendarBackdrop" aria-hidden="true">
@@ -1188,16 +1181,6 @@
       <div class="form-head"><div><h3 id="historyTitle">История</h3><p id="historySubtitle">Записи по дата и служител.</p></div><button class="close-btn" type="button" data-close="history">×</button></div>
       <div class="history-summary" id="historySummary"></div>
       <div class="history-list" id="historyList"></div>
-    </div>
-  </div>
-  <div class="form-backdrop academy-backdrop" id="academyBackdrop" aria-hidden="true">
-    <div class="academy-panel">
-      <div class="academy-toolbar">
-        <button class="close-btn" type="button" data-close="academy" aria-label="Затвори обучението">←</button>
-        <div class="academy-toolbar-copy"><strong id="academyTitle">Обучение</strong><span>Техномаркет Academy</span></div>
-        <a class="academy-external" id="academyExternal" href="https://technomarket-warranty-academy.badahboby1996.chatgpt.site/" target="_blank" rel="noopener" aria-label="Отвори в отделен прозорец">↗</a>
-      </div>
-      <iframe class="academy-frame" id="academyFrame" title="Техномаркет Academy" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads" referrerpolicy="strict-origin-when-cross-origin"></iframe>
     </div>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -1497,19 +1480,6 @@ const firestore = getFirestore(firebaseApp);
   function openHistory(type) {
     renderHistory(type === 'warranty' ? 'warranty' : 'turnover');
     openBackdrop($('#historyBackdrop'));
-  }
-
-  function openAcademy(url, title) {
-    if (!/^https:\/\/technomarket-warranty-academy\.badahboby1996\.chatgpt\.site\/?$/.test(url)) return;
-    $('#academyTitle').textContent = title || 'Обучение';
-    $('#academyExternal').href = url;
-    $('#academyFrame').src = url;
-    openBackdrop($('#academyBackdrop'));
-  }
-
-  function closeAcademy() {
-    closeBackdrop($('#academyBackdrop'));
-    setTimeout(() => { $('#academyFrame').src = 'about:blank'; }, 180);
   }
 
   function normalizeRemoteState(remoteState) {
@@ -2111,9 +2081,6 @@ const firestore = getFirestore(firebaseApp);
     const historyButton = event.target.closest('[data-history-type]');
     if (historyButton) openHistory(historyButton.dataset.historyType);
 
-    const trainingButton = event.target.closest('[data-training-url]');
-    if (trainingButton) openAcademy(trainingButton.dataset.trainingUrl, trainingButton.dataset.trainingTitle);
-
     const historyEditButton = event.target.closest('[data-history-edit]');
     if (historyEditButton && managerMode) {
       closeBackdrop($('#historyBackdrop'));
@@ -2172,7 +2139,6 @@ const firestore = getFirestore(firebaseApp);
     if (target === 'calendar') closeBackdrop($('#calendarBackdrop'));
     if (target === 'notifications') closeBackdrop($('#notificationsBackdrop'));
     if (target === 'history') closeBackdrop($('#historyBackdrop'));
-    if (target === 'academy') closeAcademy();
   }));
 
   $$('.form-backdrop').forEach(backdrop => backdrop.addEventListener('click', event => { if (event.target === backdrop) closeBackdrop(backdrop); }));
