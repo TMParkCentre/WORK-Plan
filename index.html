@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- TECHNOMARKET WORK PLAN · BUILD 5.2 · NATIVE MOBILE UX · 2026-08-10 -->
+<!-- TECHNOMARKET WORK PLAN · BUILD 5.4 · OPTIMIZED HOME + TRAINING NAV + TASK ARCHIVE · 2026-08-11 -->
 <html lang="bg" data-theme="light">
 <head>
   <meta charset="utf-8">
@@ -472,7 +472,7 @@
       left: 50%;
       bottom: 0;
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       align-items: end;
       width: min(100%, 540px);
       min-height: 76px;
@@ -812,11 +812,92 @@
     .notification-copy time { display:block; margin-top:5px; color:#aaa0a3; font-size:7px; }
     .notification-delete { width:29px; height:29px; color:var(--muted); border:1px solid #eadfe2; border-radius:9px; background:white; cursor:pointer; }
     .notification-empty { padding:28px 12px; color:var(--muted); font-size:10px; text-align:center; }
+
+    .learning-launch {
+      position: relative;
+      display: grid;
+      grid-template-columns: 46px 1fr auto;
+      align-items: center;
+      gap: 13px;
+      width: 100%;
+      min-height: 92px;
+      padding: 16px;
+      overflow: hidden;
+      color: var(--ink);
+      text-align: left;
+      border: 1px solid rgba(227,6,19,.13);
+      border-radius: 23px;
+      background: radial-gradient(circle at 100% 0, rgba(227,6,19,.10), transparent 42%), linear-gradient(145deg,#fff,#fff7f8);
+      box-shadow: var(--shadow-soft);
+      cursor: pointer;
+    }
+    .learning-launch-icon { display:grid; place-items:center; width:46px; height:46px; color:#fff; border-radius:16px; background:linear-gradient(145deg,var(--red-2),var(--red-deep)); box-shadow:0 10px 22px rgba(227,6,19,.22); }
+    .learning-launch-copy { min-width:0; }
+    .learning-launch-copy strong { display:block; font-size:13px; }
+    .learning-launch-copy span { display:block; margin-top:4px; color:var(--muted); font-size:9px; line-height:1.4; }
+    .learning-launch-arrow { color:var(--red); font-size:22px; font-weight:700; }
+
+    .training-grid { display:grid; gap:12px; }
+    .training-card {
+      position:relative;
+      width:100%;
+      min-height:176px;
+      padding:18px;
+      overflow:hidden;
+      color:#fff;
+      text-align:left;
+      border:0;
+      border-radius:25px;
+      background:radial-gradient(circle at 96% 4%,rgba(255,255,255,.20),transparent 34%),linear-gradient(145deg,#7d000b,#e30613 70%,#ff3a43);
+      box-shadow:0 18px 38px rgba(160,0,15,.22);
+      cursor:pointer;
+    }
+    .training-card::after { content:""; position:absolute; width:150px; height:150px; right:-70px; bottom:-86px; border:1px solid rgba(255,255,255,.24); border-radius:50%; }
+    .training-badge { display:inline-flex; align-items:center; gap:6px; padding:7px 9px; font-size:8px; font-weight:850; text-transform:uppercase; letter-spacing:.08em; border:1px solid rgba(255,255,255,.18); border-radius:10px; background:rgba(255,255,255,.11); }
+    .training-card h2 { max-width:76%; margin:28px 0 7px; font-size:21px; line-height:1.08; letter-spacing:-.04em; }
+    .training-card p { max-width:82%; margin:0; color:rgba(255,255,255,.72); font-size:10px; line-height:1.45; }
+    .training-card-footer { position:relative; z-index:1; display:flex; align-items:center; justify-content:space-between; margin-top:18px; font-size:9px; font-weight:850; }
+    .training-placeholder { padding:17px; border:1px dashed #ddd2d5; border-radius:20px; background:rgba(255,255,255,.58); }
+    .training-placeholder strong { display:block; font-size:11px; }
+    .training-placeholder span { display:block; margin-top:4px; color:var(--muted); font-size:9px; }
+
+    .academy-backdrop { padding:0; background:#151012; }
+    .academy-panel { display:grid; grid-template-rows:auto 1fr; width:min(100%,540px); height:100dvh; max-height:none; padding:0; overflow:hidden; border-radius:0; background:#fff; }
+    .academy-toolbar { display:flex; align-items:center; gap:11px; min-height:calc(58px + env(safe-area-inset-top)); padding:calc(10px + env(safe-area-inset-top)) 12px 10px; color:var(--ink); border-bottom:1px solid #eee5e7; background:var(--surface); }
+    .academy-toolbar-copy { flex:1; min-width:0; }
+    .academy-toolbar-copy strong { display:block; overflow:hidden; font-size:11px; text-overflow:ellipsis; white-space:nowrap; }
+    .academy-toolbar-copy span { display:block; margin-top:2px; color:var(--muted); font-size:8px; }
+    .academy-frame { width:100%; height:100%; border:0; background:#f7f3f4; }
+    .academy-external { display:grid; place-items:center; width:36px; height:36px; color:var(--red); text-decoration:none; border:1px solid rgba(227,6,19,.16); border-radius:11px; background:#fff3f4; }
+
+    .history-summary { display:grid; grid-template-columns:1fr auto; gap:12px; align-items:end; margin-bottom:15px; padding:16px; color:#fff; border-radius:20px; background:linear-gradient(145deg,#2b2023,#130f11); }
+    .history-summary small { display:block; margin-bottom:5px; color:rgba(255,255,255,.62); font-size:8px; font-weight:800; text-transform:uppercase; letter-spacing:.07em; }
+    .history-summary strong { display:block; font-size:23px; letter-spacing:-.04em; }
+    .history-summary span { display:block; margin-top:5px; color:rgba(255,255,255,.67); font-size:8px; line-height:1.4; }
+    .history-summary-icon { display:grid; place-items:center; width:43px; height:43px; color:#fff; font-size:18px; border-radius:15px; background:linear-gradient(145deg,var(--red-2),var(--red-deep)); }
+    .history-list { display:grid; gap:10px; }
+    .history-day { padding:13px; border:1px solid #eee4e6; border-radius:18px; background:#fcfafb; }
+    .history-day-head { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:10px; }
+    .history-day-head strong { display:block; font-size:11px; }
+    .history-day-head span { display:block; margin-top:3px; color:var(--muted); font-size:8px; }
+    .history-day-total { color:var(--red); font-size:12px; font-weight:900; white-space:nowrap; }
+    .history-entry { display:grid; grid-template-columns:1fr auto; gap:9px; align-items:center; padding:9px 0; border-top:1px solid #f0e9eb; }
+    .history-entry:first-of-type { border-top:0; }
+    .history-person strong { display:block; font-size:10px; }
+    .history-person span { display:block; margin-top:3px; color:var(--muted); font-size:8px; line-height:1.35; }
+    .history-entry-side { display:flex; align-items:center; gap:6px; }
+    .history-entry-value { font-size:10px; font-weight:900; white-space:nowrap; }
+    .history-edit { display:none; width:29px; height:29px; padding:0; color:var(--red); border:1px solid rgba(227,6,19,.16); border-radius:9px; background:#fff2f3; cursor:pointer; }
+    .app.manager-on ~ .form-backdrop .history-edit,
+    body.manager-modal-on .history-edit { display:grid; place-items:center; }
+    .history-empty { padding:27px 12px; color:var(--muted); font-size:10px; text-align:center; }
+    .dashboard-tap { width:100%; font:inherit; text-align:left; border:0; cursor:pointer; }
+    .dashboard-tap:active { transform:scale(.99); }
     .theme-sun { display: none; }
     html[data-theme="dark"] .theme-moon { display: none; }
     html[data-theme="dark"] .theme-sun { display: block; }
     .app.manager-on .fab.manager-only { display: grid !important; }
-    .app.manager-on .bottom-nav { grid-template-columns: 1fr 1fr 62px 1fr 1fr; }
+    .app.manager-on .bottom-nav { grid-template-columns: 1fr 1fr 54px 1fr 1fr 1fr; }
 
     html[data-theme="dark"] {
       --ink: #f7f3f4;
@@ -871,6 +952,11 @@
     html[data-theme="dark"] .notification-item.unread { border-color:rgba(255,61,73,.34); background:#321f23; }
     html[data-theme="dark"] .notification-delete { color:var(--muted); border-color:#4a3b3f; background:#211b1e; }
     html[data-theme="dark"] .toast { background:#f7f3f4; color:#171315; }
+    html[data-theme="dark"] .learning-launch { border-color:#413437; background:radial-gradient(circle at 100% 0,rgba(255,61,73,.12),transparent 42%),linear-gradient(145deg,#2a2326,#211b1e); }
+    html[data-theme="dark"] .training-placeholder,
+    html[data-theme="dark"] .history-day { border-color:#403438; background:#2a2326; }
+    html[data-theme="dark"] .academy-panel { background:#171315; }
+    html[data-theme="dark"] .academy-toolbar { border-color:#3a3033; }
 
     @media (min-width: 760px) {
       body { padding: 24px 0; }
@@ -947,20 +1033,15 @@
         </div>
         <p class="date-nav-hint">Плъзни наляво или надясно, за да смениш датата</p>
 
-        <div class="section-head"><div><h2>Днес накратко</h2><p>Докосни карта за повече информация</p></div><button class="text-btn" data-open-view="dashboard">Дашборд</button></div>
+        <div class="section-head"><div><h2>Днес накратко</h2><p>Само най-важното за деня</p></div></div>
         <div class="metric-grid">
           <button class="metric" data-open-view="tasks">
             <div class="metric-top"><span class="metric-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><span class="metric-arrow">›</span></div>
-            <span class="metric-label">Задачи</span><strong class="metric-value" id="taskMetric">2 / 5</strong><span class="metric-note">3 остават за днес</span>
+            <span class="metric-label">Активни задачи</span><strong class="metric-value" id="taskMetric">0 / 3</strong><span class="metric-note">3 остават за изпълнение</span>
           </button>
           <button class="metric" data-open-view="dashboard">
-            <div class="metric-top"><span class="metric-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><span class="metric-arrow">›</span></div>
-            <span class="metric-label">Оборот месец</span><strong class="metric-value" id="metricRevenueHome">60 199 €</strong><span class="metric-note" id="metricRevenueNote">24% от целта</span>
-          </button>
-          <button class="metric wide" data-open-view="dashboard">
-            <div class="metric-top" style="margin-bottom:12px"><span class="metric-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span><span class="metric-arrow">›</span></div>
-            <div style="display:flex;align-items:end;justify-content:space-between;gap:12px"><div><span class="metric-label">Гаранции за месеца</span><strong class="metric-value" id="metricWarrantyHome">533.79 €</strong></div><span class="metric-note" id="metricWarrantyGoal">0.89% от оборота</span></div>
-            <div class="progress-line"><i id="metricWarrantyProgress" style="width:12%"></i></div>
+            <div class="metric-top"><span class="metric-icon" aria-hidden="true">€</span><span class="metric-arrow">›</span></div>
+            <span class="metric-label">Дашборд</span><strong class="metric-value">Цели и резултати</strong><span class="metric-note">Оборот, гаранции и история</span>
           </button>
         </div>
 
@@ -974,14 +1055,21 @@
           <div class="person"><div class="person-face">СФ</div><b>Стефани</b><small>Смяна III</small></div>
         </div><span class="team-launch-footer"><span>На работа днес</span><span>Отвори целия график →</span></span></button>
 
+        <div class="section-head"><div><h2>Обучения</h2><p>Кратки и практични академии за екипа</p></div><button class="text-btn" data-open-view="training">Виж всички</button></div>
+        <button class="learning-launch" data-open-view="training" aria-label="Отвори каталога с обучения">
+          <span class="learning-launch-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 10 9-5 9 5-9 5-9-5Z"/><path d="M7 12.5V17c3 2 7 2 10 0v-4.5M21 10v6"/></svg></span>
+          <span class="learning-launch-copy"><strong>Техномаркет Academy</strong><span>1 активно обучение · За целия екип</span></span>
+          <span class="learning-launch-arrow">›</span>
+        </button>
+
         <div class="section-head"><div><h2>Следващи задачи</h2><p>Подредени по приоритет</p></div><button class="text-btn" data-open-view="tasks">Виж всички</button></div>
         <div class="task-list compact-tasks"></div>
       </section>
 
       <section class="view" data-view="tasks">
         <div class="page-head"><div><p class="eyebrow">Работен фокус</p><h1>Задачи</h1><p id="tasksDateTitle">Събота, 8 август</p></div><div style="display:grid;gap:7px;justify-items:end"><span class="count-pill" id="taskPill">3 остават</span><button class="mini-btn manager-only" data-manager-action="task-add">+ Добави</button></div></div>
-        <p class="intro">Всички задачи са към екипа. Управителят може да посочи конкретен отговорник.</p>
-        <div class="filter-row"><button class="filter active" data-filter="all">Всички</button><button class="filter" data-filter="open">Активни</button><button class="filter" data-filter="done">Завършени</button><button class="filter" data-filter="high">Важни</button></div>
+        <p class="intro">Тук са само незавършените задачи. Отметнатите отиват в архив „Завършени“.</p>
+        <div class="filter-row"><button class="filter active" data-filter="open">За изпълнение</button><button class="filter" data-filter="high">Важни</button><button class="filter" data-filter="done">Завършени</button></div>
         <div class="task-list full-tasks"></div>
       </section>
 
@@ -999,16 +1087,29 @@
 
       <section class="view" data-view="dashboard">
         <div class="page-head"><div><p class="eyebrow">Месечен преглед</p><h1>Дашборд</h1><p id="resultsUpdated">Последно обновяване 12:41</p></div><div style="display:grid;gap:7px;justify-items:end"><input class="month-picker" id="resultMonthPicker" type="month" aria-label="Избери месец за резултатите"><span class="count-pill" id="goalPill">24% цел</span><button class="mini-btn manager-only" data-manager-action="consultant-edit">Редактирай служител</button><button class="mini-btn manager-only" data-manager-action="goals">Редактирай цели</button></div></div>
-        <article class="dashboard-hero">
+        <button class="dashboard-hero dashboard-tap" type="button" data-history-type="turnover" aria-label="Отвори историята на оборота">
           <p class="dashboard-kicker" id="dashboardMonthKicker">Оборот на магазина · август</p><strong class="dashboard-total" id="dashboardRevenue">60 199 €</strong>
           <div class="dashboard-sub"><span id="dashboardGoalText">24% от цел 250 000 €</span><span>Парк Център</span></div>
           <div class="line-chart" aria-label="Графика на оборота за последните седем дни"><svg viewBox="0 0 320 110" preserveAspectRatio="none"><defs><linearGradient id="salesArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="white" stop-opacity=".35"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient></defs><path class="grid" d="M0 25H320M0 57H320M0 89H320"/><path class="area" d="M0 93 C35 92 35 62 71 65 S108 89 144 49 S183 19 212 52 S251 75 320 26 L320 110H0Z"/><path class="line" d="M0 93 C35 92 35 62 71 65 S108 89 144 49 S183 19 212 52 S251 75 320 26"/><circle class="point" cx="174" cy="31" r="4"/></svg></div>
-        </article>
-        <div class="ratio-strip"><article class="ratio-card"><small>Гаранции</small><strong id="dashboardWarranty">533.79 €</strong><span id="dashboardWarrantyCount">4 броя</span></article><article class="ratio-card"><small>Дял гаранции / оборот</small><strong id="storeWarrantyRatio">0.89%</strong><span>на ниво магазин</span></article></div>
+        </button>
+        <div class="ratio-strip"><button class="ratio-card dashboard-tap" type="button" data-history-type="warranty" aria-label="Отвори историята на гаранциите"><small>Гаранции</small><strong id="dashboardWarranty">533.79 €</strong><span id="dashboardWarrantyCount">4 броя · Виж история</span></button><article class="ratio-card"><small>Дял гаранции / оборот</small><strong id="storeWarrantyRatio">0.89%</strong><span>на ниво мазагин</span></article></div>
         <article class="goal-card"><div class="goal-top"><div><h3 id="revenueMonthTitle">Оборот за август</h3><p>Цел на магазина</p><div class="goal-number"><span id="revenueValue">60 199</span> <small>€</small></div></div><div class="donut" id="revenueDonut" style="--p:24%" data-value="24%"></div></div><div class="progress-line"><i id="revenueProgress" style="width:24%"></i></div><button class="mini-btn manager-only" style="margin-top:14px" data-manager-action="turnover">+ Добави оборот</button></article>
         <article class="goal-card"><div class="goal-top"><div><h3>Гаранции</h3><p id="warrantyMonthTitle">ЗК Алианц · август</p><div class="goal-number"><span id="warrantyValue">533.79</span> <small>€</small></div></div><div class="donut" id="warrantyDonut" style="--p:12%" data-value="12%"></div></div><div class="progress-line"><i id="warrantyProgress" style="width:12%"></i></div><button class="mini-btn manager-only" style="margin-top:14px" data-manager-action="warranty">+ Добави гаранция</button></article>
         <div class="section-head"><div><h2>Индивидуални резултати</h2><p>Гаранции спрямо оборот за месеца</p></div></div>
         <article class="goal-card consultant-shell"><div class="consultant-table" id="consultantTable"></div></article>
+      </section>
+
+      <section class="view" data-view="training">
+        <div class="page-head"><div><p class="eyebrow">Техномаркет Academy</p><h1>Обучения</h1><p>Избери тема и започни обучението</p></div><button class="mini-btn" type="button" data-open-view="home">← Начало</button></div>
+        <div class="training-grid">
+          <button class="training-card" type="button" data-training-url="https://technomarket-warranty-academy.badahboby1996.chatgpt.site/" data-training-title="Продажба на допълнителни гаранции">
+            <span class="training-badge">Активно обучение</span>
+            <h2>Продажба на допълнителни гаранции</h2>
+            <p>Практични техники, реални ситуации и уверено представяне на услугата.</p>
+            <span class="training-card-footer"><span>За целия екип</span><span>Отвори академията →</span></span>
+          </button>
+          <div class="training-placeholder"><strong>Следващи обучения</strong><span>Новите теми ще се появяват тук като отделни карти.</span></div>
+        </div>
       </section>
     </main>
 
@@ -1018,6 +1119,7 @@
       <button class="fab manager-only" id="fab" aria-label="Бързо действие за управител"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
       <button class="nav-btn" data-nav="dashboard"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Дашборд</span></button>
       <button class="nav-btn" data-nav="schedule"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span>График</span></button>
+      <button class="nav-btn" data-nav="training"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 10 9-5 9 5-9 5-9-5Z"/><path d="M7 12.5V17c3 2 7 2 10 0v-4.5M21 10v6"/></svg><span>Обучения</span></button>
     </nav>
   </div>
 
@@ -1061,7 +1163,7 @@
         <button class="manager-tile" data-manager-action="schedule"><i>▦</i><strong>График</strong><span>Промени смяна или отсъствие</span></button>
         <button class="manager-tile" data-manager-action="notice"><i>⌁</i><strong>Съобщение</strong><span>Обнови известието за екипа</span></button>
       </div>
-      <p class="build-version">WORK PLAN · версия 5.2 · Firebase Sync</p>
+      <p class="build-version">WORK PLAN · версия 5.4 · Firebase Sync</p>
     </div>
   </div>
   <div class="form-backdrop" id="calendarBackdrop" aria-hidden="true">
@@ -1078,6 +1180,24 @@
       <div class="form-head"><div><h3>Известия</h3><p>Промени по задачи, график, цели и резултати.</p></div><button class="close-btn" type="button" data-close="notifications">×</button></div>
       <div class="notification-list" id="notificationList"></div>
       <button class="form-submit" type="button" id="clearNotifications">Изчисти всички видени</button>
+    </div>
+  </div>
+  <div class="form-backdrop" id="historyBackdrop" aria-hidden="true">
+    <div class="form-panel">
+      <div class="grabber"></div>
+      <div class="form-head"><div><h3 id="historyTitle">История</h3><p id="historySubtitle">Записи по дата и служител.</p></div><button class="close-btn" type="button" data-close="history">×</button></div>
+      <div class="history-summary" id="historySummary"></div>
+      <div class="history-list" id="historyList"></div>
+    </div>
+  </div>
+  <div class="form-backdrop academy-backdrop" id="academyBackdrop" aria-hidden="true">
+    <div class="academy-panel">
+      <div class="academy-toolbar">
+        <button class="close-btn" type="button" data-close="academy" aria-label="Затвори обучението">←</button>
+        <div class="academy-toolbar-copy"><strong id="academyTitle">Обучение</strong><span>Техномаркет Academy</span></div>
+        <a class="academy-external" id="academyExternal" href="https://technomarket-warranty-academy.badahboby1996.chatgpt.site/" target="_blank" rel="noopener" aria-label="Отвори в отделен прозорец">↗</a>
+      </div>
+      <iframe class="academy-frame" id="academyFrame" title="Техномаркет Academy" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads" referrerpolicy="strict-origin-when-cross-origin"></iframe>
     </div>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -1226,7 +1346,7 @@ const firestore = getFirestore(firebaseApp);
   state.metrics.warrantyCount = state.consultants.reduce((sum, item) => sum + Number(item.warrantyCount || 0), 0);
   state.tasks = (state.tasks || []).map(task => ({ ...task, owner: task.owner === 'Екипна' ? 'Целия екип' : task.owner }));
 
-  let currentFilter = 'all';
+  let currentFilter = 'open';
   let selectedDay = activeMonth === `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}` ? now.getDate() : 1;
   let currentEditor = null;
   let pendingAction = null;
@@ -1331,6 +1451,67 @@ const firestore = getFirestore(firebaseApp);
     $('#notificationList').innerHTML = visible.length ? visible.map(item => `<article class="notification-item ${readNotificationIds.has(item.id) ? '' : 'unread'}"><span class="notification-icon">${escapeHtml(item.icon || '⌁')}</span><div class="notification-copy"><strong>${escapeHtml(item.title || 'Известие')}</strong><p>${escapeHtml(item.message || '')}</p><time>${escapeHtml(new Intl.DateTimeFormat('bg-BG', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' }).format(new Date(item.createdAt || Date.now())))}</time></div><button class="notification-delete" type="button" data-dismiss-notification="${escapeHtml(item.id)}" aria-label="Изтрий известието">×</button></article>`).join('') : '<div class="notification-empty">Няма нови известия.</div>';
   }
 
+  function historyRows(type) {
+    const byDate = new Map();
+    state.consultants.forEach(consultant => {
+      Object.entries(consultant.daily || {}).forEach(([date, record]) => {
+        if (!date.startsWith(`${activeMonth}-`)) return;
+        const value = type === 'turnover' ? Number(record.turnover || 0) : Number(record.warranty || 0);
+        const count = type === 'warranty' ? Number(record.warrantyCount || 0) : 0;
+        if (value <= 0 && count <= 0) return;
+        const updatedAt = type === 'turnover' ? (record.turnoverUpdatedAt || record.updatedAt || null) : (record.warrantyUpdatedAt || record.updatedAt || null);
+        if (!byDate.has(date)) byDate.set(date, { date, total: 0, count: 0, entries: [] });
+        const row = byDate.get(date);
+        row.total += value;
+        row.count += count;
+        row.entries.push({ employee: consultant.name, value, count, updatedAt });
+      });
+    });
+    return [...byDate.values()].sort((a, b) => b.date.localeCompare(a.date)).map(row => ({
+      ...row,
+      entries: row.entries.sort((a, b) => Number(b.value) - Number(a.value))
+    }));
+  }
+
+  function historyDateLabel(date) {
+    const value = new Intl.DateTimeFormat('bg-BG', { weekday:'long', day:'numeric', month:'long' }).format(new Date(`${date}T12:00:00`));
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  }
+
+  function historyTimeLabel(value) {
+    if (!value || Number.isNaN(new Date(value).getTime())) return 'Стар запис · няма запазен час';
+    return `Въведено/редактирано ${new Intl.DateTimeFormat('bg-BG', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' }).format(new Date(value))}`;
+  }
+
+  function renderHistory(type) {
+    const isTurnover = type === 'turnover';
+    const rows = historyRows(type);
+    const actions = rows.flatMap(row => row.entries.map(entry => ({ ...entry, date: row.date }))).filter(entry => entry.updatedAt).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+    const latest = actions[0] || (rows[0]?.entries[0] ? { ...rows[0].entries[0], date: rows[0].date } : null);
+    $('#historyTitle').textContent = isTurnover ? 'История на оборота' : 'История на гаранциите';
+    $('#historySubtitle').textContent = `${monthTitle(activeMonth)} · по дата и служител`;
+    $('#historySummary').innerHTML = latest ? `<div><small>Последно ${latest.updatedAt ? 'въведено' : 'налично по дата'}</small><strong>${formatMoney(latest.value)} €</strong><span>${escapeHtml(latest.employee)} · ${escapeHtml(historyDateLabel(latest.date))}<br>${escapeHtml(historyTimeLabel(latest.updatedAt))}</span></div><span class="history-summary-icon">${isTurnover ? '↗' : '◇'}</span>` : `<div><small>${isTurnover ? 'Оборот' : 'Гаранции'}</small><strong>0 €</strong><span>Няма записи за ${escapeHtml(monthTitle(activeMonth))}.</span></div><span class="history-summary-icon">${isTurnover ? '↗' : '◇'}</span>`;
+    $('#historyList').innerHTML = rows.length ? rows.map(row => `<article class="history-day"><div class="history-day-head"><div><strong>${escapeHtml(historyDateLabel(row.date))}</strong><span>${row.entries.length} ${row.entries.length === 1 ? 'служител' : 'служители'}${isTurnover ? '' : ` · ${row.count} бр.`}</span></div><span class="history-day-total">${formatMoney(row.total)} €</span></div>${row.entries.map(entry => `<div class="history-entry"><div class="history-person"><strong>${escapeHtml(entry.employee)}</strong><span>${escapeHtml(historyTimeLabel(entry.updatedAt))}${isTurnover ? '' : ` · ${entry.count} бр.`}</span></div><div class="history-entry-side"><span class="history-entry-value">${formatMoney(entry.value)} €</span><button class="history-edit" type="button" data-history-edit="${escapeHtml(entry.employee)}" data-history-date="${escapeHtml(row.date)}" aria-label="Редактирай записа">✎</button></div></div>`).join('')}</article>`).join('') : '<div class="history-empty">Няма въведени данни за избрания месец.</div>';
+  }
+
+  function openHistory(type) {
+    renderHistory(type === 'warranty' ? 'warranty' : 'turnover');
+    openBackdrop($('#historyBackdrop'));
+  }
+
+  function openAcademy(url, title) {
+    if (!/^https:\/\/technomarket-warranty-academy\.badahboby1996\.chatgpt\.site\/?$/.test(url)) return;
+    $('#academyTitle').textContent = title || 'Обучение';
+    $('#academyExternal').href = url;
+    $('#academyFrame').src = url;
+    openBackdrop($('#academyBackdrop'));
+  }
+
+  function closeAcademy() {
+    closeBackdrop($('#academyBackdrop'));
+    setTimeout(() => { $('#academyFrame').src = 'about:blank'; }, 180);
+  }
+
   function normalizeRemoteState(remoteState) {
     const next = {
       ...clone(DEFAULT_STATE),
@@ -1430,6 +1611,7 @@ const firestore = getFirestore(firebaseApp);
   function setManagerMode(active) {
     managerMode = Boolean(active);
     $('.app').classList.toggle('manager-on', managerMode);
+    document.body.classList.toggle('manager-modal-on', managerMode);
     $('#managerBtn').classList.toggle('manager-active', managerMode);
     $('#managerBtn').setAttribute('aria-label', managerMode ? 'Отвори управителския център' : 'Вход за управител');
     if (managerMode) sessionStorage.setItem('tm-manager-mode', '1');
@@ -1455,17 +1637,18 @@ const firestore = getFirestore(firebaseApp);
 
   function renderTasks() {
     const tasks = state.tasks || [];
-    const filtered = tasks.filter(task => currentFilter === 'all' || (currentFilter === 'open' && !task.done) || (currentFilter === 'done' && task.done) || (currentFilter === 'high' && task.priority === 'Важна'));
+    const filtered = tasks.filter(task => (currentFilter === 'open' && !task.done) || (currentFilter === 'done' && task.done) || (currentFilter === 'high' && !task.done && task.priority === 'Важна'));
     $('.full-tasks').innerHTML = filtered.map(taskMarkup).join('') || '<p class="intro">Няма задачи в този филтър.</p>';
-    $('.compact-tasks').innerHTML = tasks.filter(task => !task.done).slice(0, 3).map(taskMarkup).join('') || '<p class="intro">Всички задачи са завършени.</p>';
-    const done = tasks.filter(task => task.done).length;
-    const remaining = tasks.length - done;
-    $('#taskMetric').textContent = `${done} / ${tasks.length}`;
-    $('#taskPill').textContent = `${remaining} остават`;
+    const activeTasks = tasks.filter(task => !task.done);
+    const archivedTasks = tasks.filter(task => task.done);
+    $('.compact-tasks').innerHTML = activeTasks.slice(0, 3).map(taskMarkup).join('') || '<p class="intro">Всички задачи са завършени.</p>';
+    const remaining = activeTasks.length;
+    $('#taskMetric').textContent = `0 / ${remaining}`;
+    $('#taskPill').textContent = currentFilter === 'done' ? `${archivedTasks.length} завършени` : `${remaining} остават`;
     const trend = $('.metric-grid .metric:first-child .trend');
     const note = $('.metric-grid .metric:first-child .metric-note');
-    if (trend) trend.textContent = `${done} готови`;
-    if (note) note.textContent = `${remaining} остават за днес`;
+    if (trend) trend.textContent = 'Само активните';
+    if (note) note.textContent = remaining ? `${remaining} остават за изпълнение` : 'Няма незавършени задачи';
   }
 
   function totalsThroughDay(day) {
@@ -1492,13 +1675,7 @@ const firestore = getFirestore(firebaseApp);
     const storeRatio = ratioPercent(metrics.warrantyCurrent, metrics.revenueCurrent);
     const toDate = totalsThroughDay(selectedDay);
     const toDateRevenuePercent = percent(toDate.revenue, metrics.revenueTarget);
-    const toDateWarrantyPercent = percent(toDate.warranty, metrics.warrantyTarget);
     const toDateRatio = ratioPercent(toDate.warranty, toDate.revenue);
-    $('#metricRevenueHome').textContent = `${formatMoney(toDate.revenue)} €`;
-    $('#metricRevenueNote').textContent = `${toDateRevenuePercent}% от целта · до ${selectedDay} ${monthName(activeMonth)}`;
-    $('#metricWarrantyHome').textContent = `${formatMoney(toDate.warranty)} €`;
-    $('#metricWarrantyGoal').textContent = `${formatPercent(toDateRatio)} от оборота · ${toDate.warrantyCount} бр.`;
-    $('#metricWarrantyProgress').style.width = `${toDateWarrantyPercent}%`;
     $('#heroRevenue').textContent = `${formatMoney(toDate.revenue)} €`;
     $('#heroRevenueNote').textContent = `${toDateRevenuePercent}% от целта · натрупано до датата`;
     $('#heroRevenueProgress').style.width = `${toDateRevenuePercent}%`;
@@ -1629,7 +1806,7 @@ const firestore = getFirestore(firebaseApp);
   function dailyRecord(consultant, date, create = false) {
     if (!consultant || !date) return null;
     if (!consultant.daily) consultant.daily = {};
-    if (!consultant.daily[date] && create) consultant.daily[date] = { turnover: 0, warranty: 0, warrantyCount: 0 };
+    if (!consultant.daily[date] && create) consultant.daily[date] = { turnover: 0, warranty: 0, warrantyCount: 0, turnoverUpdatedAt: null, warrantyUpdatedAt: null };
     return consultant.daily[date] || { turnover: 0, warranty: 0, warrantyCount: 0 };
   }
 
@@ -1748,7 +1925,10 @@ const firestore = getFirestore(firebaseApp);
       if (!(amount > 0)) { error.textContent = 'Въведи валидна сума.'; return; }
       const result = state.consultants.find(item => item.name === consultant);
       const record = dailyRecord(result, date, true);
-      if (record) record.turnover = Number(record.turnover || 0) + amount;
+      if (record) {
+        record.turnover = Number(record.turnover || 0) + amount;
+        record.turnoverUpdatedAt = new Date().toISOString();
+      }
       syncStoreTotalsFromConsultants();
       touchUpdatedTime();
       addNotification('Оборотът е обновен', `${consultant} · ${formatMoney(amount)} € · ${date}`, '↗');
@@ -1762,6 +1942,7 @@ const firestore = getFirestore(firebaseApp);
       if (record) {
         record.warranty = Number(record.warranty || 0) + amount;
         record.warrantyCount = Number(record.warrantyCount || 0) + 1;
+        record.warrantyUpdatedAt = new Date().toISOString();
       }
       syncStoreTotalsFromConsultants();
       touchUpdatedTime();
@@ -1776,7 +1957,8 @@ const firestore = getFirestore(firebaseApp);
       const warrantyCount = Number(formData.get('warrantyCount'));
       if (!consultant || !newName || !date.startsWith(`${activeMonth}-`) || turnover < 0 || warranty < 0 || warrantyCount < 0 || !Number.isInteger(warrantyCount)) { error.textContent = 'Провери името, датата и въведените стойности.'; return; }
       if (newName !== oldName && state.consultants.some(item => item.name.toLocaleLowerCase('bg-BG') === newName.toLocaleLowerCase('bg-BG'))) { error.textContent = 'Вече има служител с това име.'; return; }
-      Object.assign(dailyRecord(consultant, date, true), { turnover, warranty, warrantyCount });
+      const recordUpdatedAt = new Date().toISOString();
+      Object.assign(dailyRecord(consultant, date, true), { turnover, warranty, warrantyCount, turnoverUpdatedAt: recordUpdatedAt, warrantyUpdatedAt: recordUpdatedAt });
       if (newName !== oldName) {
         consultant.name = newName;
         const employeeIndex = EMPLOYEES.indexOf(oldName);
@@ -1926,6 +2108,18 @@ const firestore = getFirestore(firebaseApp);
   });
 
   document.addEventListener('click', event => {
+    const historyButton = event.target.closest('[data-history-type]');
+    if (historyButton) openHistory(historyButton.dataset.historyType);
+
+    const trainingButton = event.target.closest('[data-training-url]');
+    if (trainingButton) openAcademy(trainingButton.dataset.trainingUrl, trainingButton.dataset.trainingTitle);
+
+    const historyEditButton = event.target.closest('[data-history-edit]');
+    if (historyEditButton && managerMode) {
+      closeBackdrop($('#historyBackdrop'));
+      openEditor('consultant-edit', { employee: historyEditButton.dataset.historyEdit, date: historyEditButton.dataset.historyDate });
+    }
+
     const actionButton = event.target.closest('[data-manager-action]');
     if (actionButton) handleManagerAction(actionButton.dataset.managerAction);
 
@@ -1954,7 +2148,7 @@ const firestore = getFirestore(firebaseApp);
     if (checkButton) {
       const card = checkButton.closest('[data-task-id]');
       const task = state.tasks.find(item => Number(item.id) === Number(card.dataset.taskId));
-      if (task) { task.done = !task.done; saveState(); renderTasks(); showToast(task.done ? 'Задачата е завършена' : 'Задачата е върната като активна'); }
+      if (task) { task.done = !task.done; saveState(); renderTasks(); showToast(task.done ? 'Задачата е преместена в „Завършени“' : 'Задачата е върната като активна'); }
     }
 
     const dayButton = event.target.closest('[data-edit-day]');
@@ -1977,6 +2171,8 @@ const firestore = getFirestore(firebaseApp);
     if (target === 'manager-panel') closeBackdrop($('#managerPanelBackdrop'));
     if (target === 'calendar') closeBackdrop($('#calendarBackdrop'));
     if (target === 'notifications') closeBackdrop($('#notificationsBackdrop'));
+    if (target === 'history') closeBackdrop($('#historyBackdrop'));
+    if (target === 'academy') closeAcademy();
   }));
 
   $$('.form-backdrop').forEach(backdrop => backdrop.addEventListener('click', event => { if (event.target === backdrop) closeBackdrop(backdrop); }));
