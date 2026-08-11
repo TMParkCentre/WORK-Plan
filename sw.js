@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tm-work-plan-pwa-v5-5';
+const CACHE_NAME = 'tm-work-plan-pwa-v5-6';
 const APP_SHELL = [
   './',
   './index.html',
